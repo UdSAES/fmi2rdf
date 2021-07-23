@@ -1,0 +1,7 @@
+= FMI to RDF
+
+Extracts facts about https://fmi-standard.org[Functional Mock-up Units (FMUs)] and represents them as triples using the https://www.w3.org/TR/rdf11-concepts/[Resource Description Framework (RDF)].
+
+The information extracted includes metadata and structural information about the model as exposed in the `modelDescription.xml`-file as well as additional facts. It is encoded using the https://ontologies.msaas.me/fmi-ontology.ttl[FMI-ontology] (defined in this repository) and the https://ontologies.msaas.me/sms-ontology.ttl[Systems Modelling and Simulation (SMS)-ontology] as well as common ontologies such as RDF and XSD.
+
+Currently, development is focused on FMUs for co-simulation according to version 2.0.2 of the specification.
