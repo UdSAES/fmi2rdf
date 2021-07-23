@@ -1,0 +1,17 @@
+[[source]]
+name = "pypi"
+url = "https://pypi.org/simple"
+verify_ssl = true
+
+[dev-packages]
+isort = "*"
+black = "==21.7b0"
+
+[packages]
+pytest = "*"
+invoke = "*"
+rdflib = "*"
+requests = "*"
+
+[requires]
+python_version = "3.8"
