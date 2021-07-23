@@ -28,14 +28,14 @@
 ###  https://ontologies.msaas.me/fmi-ontology.ttl#fmiVersion
 :fmiVersion rdf:type owl:ObjectProperty ;
             rdfs:domain :FMU ;
-            rdfs:comment """Version of “FMI for Model Exchange or Co-Simulation” that was used to generate the XML file."""@en .
+            rdfs:comment "Version of “FMI for Model Exchange or Co-Simulation” that was used to generate the XML file."@en .
 
 
 ###  https://ontologies.msaas.me/fmi-ontology.ttl#generationDateAndTime
 :generationDateAndTime rdf:type owl:ObjectProperty ;
                        rdfs:domain :FMU ;
                        rdfs:comment "Optional date and time when the XML file was generated."@en ,
-                                    "The format is a subset of “xs:dateTime” and should be: “YYYY-MM-DDThh:mm:ssZ\" (with one “T” between date and time; “Z” characterizes the Zulu time zone, in other words Greenwich meantime)."@en .
+                                    "The format is a subset of “xs:dateTime” and should be: “YYYY-MM-DDThh:mm:ssZ” (with one “T” between date and time; “Z” characterizes the Zulu time zone, in other words Greenwich meantime)."@en .
 
 
 ###  https://ontologies.msaas.me/fmi-ontology.ttl#generationTool
@@ -47,7 +47,7 @@
 ###  https://ontologies.msaas.me/fmi-ontology.ttl#guid
 :guid rdf:type owl:ObjectProperty ;
       rdfs:domain :FMU ;
-      rdfs:comment """The “Globally Unique IDentifier” is a string that is used to check that the XML file is compatible with the C functions of the FMU."""@en .
+      rdfs:comment "The “Globally Unique IDentifier” is a string that is used to check that the XML file is compatible with the C functions of the FMU."@en .
 
 
 ###  https://ontologies.msaas.me/fmi-ontology.ttl#license
@@ -59,18 +59,19 @@
 ###  https://ontologies.msaas.me/fmi-ontology.ttl#modelName
 :modelName rdf:type owl:ObjectProperty ;
            rdfs:domain :FMU ;
-           rdfs:comment "The name of the model as used in the modeling environment that generated the XML file, such as \"Modelica.Mechanics.Rotational.Examples.CoupledClutches”."@en .
+           rdfs:comment "The name of the model as used in the modeling environment that generated the XML file, such as “Modelica.Mechanics.Rotational.Examples.CoupledClutches”."@en .
 
 
 ###  https://ontologies.msaas.me/fmi-ontology.ttl#numberOfEventIndicators
 :numberOfEventIndicators rdf:type owl:ObjectProperty ;
                          rdfs:domain :FMU ;
-                         rdfs:comment """The (fixed) number of event indicators for an FMU based on FMI for Model Exchange. For Co-Simulation, this value is ignored."""@en .
+                         rdfs:comment "The (fixed) number of event indicators for an FMU based on FMI for Model Exchange. For Co-Simulation, this value is ignored."@en .
 
 
 ###  https://ontologies.msaas.me/fmi-ontology.ttl#version
 :version rdf:type owl:ObjectProperty ;
-         rdfs:domain :FMU .
+         rdfs:domain :FMU ;
+         rdfs:comment "Optional version of the model, for example “1.0”."@en .
 
 
 #################################################################
