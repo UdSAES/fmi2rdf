@@ -68,6 +68,12 @@
                          rdfs:comment "The (fixed) number of event indicators for an FMU based on FMI for Model Exchange. For Co-Simulation, this value is ignored."@en .
 
 
+###  https://ontologies.msaas.me/fmi-ontology.ttl#variableNamingConvention
+:variableNamingConvention rdf:type owl:ObjectProperty ;
+                          rdfs:comment "Currently standardized are: * “flat”: A list of strings (the default). * “structured“: Hierarchical names with “.” as hierarchy separator, and with array elements and derivative characterization."@en ,
+                                       "Defines whether the variable names in “ModelVariables / ScalarVariable / name ” and in “TypeDefinitions / Type / name” follow a particular convention."@en .
+
+
 ###  https://ontologies.msaas.me/fmi-ontology.ttl#version
 :version rdf:type owl:ObjectProperty ;
          rdfs:domain :FMU ;
