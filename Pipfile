@@ -12,6 +12,7 @@ pytest = "*"
 invoke = "*"
 rdflib = "*"
 requests = "*"
+loguru = "*"
 
 [requires]
 python_version = "3.8"
