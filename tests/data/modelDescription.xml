@@ -1,0 +1,1942 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<fmiModelDescription
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  fmiVersion="2.0"
+  modelName="PhotoVoltaicPowerPlantFMU"
+  guid="{6157f34f-f629-484b-b873-f31be22269e1}"
+  generationTool="Dymola Version 2021 (64-bit), 2020-04-17 (requires license to execute)"
+  generationDateAndTime="2021-01-21T14:31:24Z"
+  variableNamingConvention="structured"
+  numberOfEventIndicators="14">
+  <CoSimulation
+    modelIdentifier="PhotoVoltaicPowerPlantFMU"
+    canHandleVariableCommunicationStepSize="true"
+    canInterpolateInputs="true"
+    maxOutputDerivativeOrder="1"
+    canGetAndSetFMUstate="true"
+    canSerializeFMUstate="true"
+    providesDirectionalDerivative="true"/>
+  <UnitDefinitions>
+    <Unit
+      name="1"/>
+    <Unit
+      name="1/K">
+      <BaseUnit K="-1"/>
+    </Unit>
+    <Unit
+      name="1/m">
+      <BaseUnit m="-1"/>
+    </Unit>
+    <Unit
+      name="K">
+      <BaseUnit K="1"/>
+      <DisplayUnit
+        name="degC"
+        offset="-273.15"/>
+    </Unit>
+    <Unit
+      name="W">
+      <BaseUnit kg="1"
+        m="2"
+        s="-3"/>
+    </Unit>
+    <Unit
+      name="W.s/(m3.K)">
+      <BaseUnit kg="1"
+        m="-1"
+        s="-2"
+        K="-1"/>
+    </Unit>
+    <Unit
+      name="W/(m2.K)">
+      <BaseUnit kg="1"
+        s="-3"
+        K="-1"/>
+    </Unit>
+    <Unit
+      name="W/m2">
+      <BaseUnit kg="1"
+        s="-3"/>
+    </Unit>
+    <Unit
+      name="deg">
+      <BaseUnit rad="1"
+        factor="0.017453292519943295"/>
+    </Unit>
+    <Unit
+      name="degC">
+      <BaseUnit K="1"
+        offset="273.15"/>
+    </Unit>
+    <Unit
+      name="kW.h">
+      <BaseUnit kg="1"
+        m="2"
+        s="-2"
+        factor="3600000.0"/>
+    </Unit>
+    <Unit
+      name="m">
+      <BaseUnit m="1"/>
+    </Unit>
+    <Unit
+      name="m/s">
+      <BaseUnit m="1"
+        s="-1"/>
+    </Unit>
+    <Unit
+      name="m2">
+      <BaseUnit m="2"/>
+    </Unit>
+    <Unit
+      name="m2/W">
+      <BaseUnit kg="-1"
+        s="3"/>
+    </Unit>
+    <Unit
+      name="rad">
+      <BaseUnit rad="1"/>
+    </Unit>
+    <Unit
+      name="s">
+      <BaseUnit s="1"/>
+    </Unit>
+  </UnitDefinitions>
+  <TypeDefinitions>
+    <SimpleType
+      name="Modelica.Blocks.Interfaces.RealInput">
+      <Real/>
+    </SimpleType>
+    <SimpleType
+      name="Modelica.Blocks.Interfaces.RealOutput">
+      <Real/>
+    </SimpleType>
+    <SimpleType
+      name="Modelica.SIunits.Angle">
+      <Real
+        quantity="Angle"
+        unit="rad"/>
+    </SimpleType>
+    <SimpleType
+      name="Modelica.SIunits.Area">
+      <Real
+        quantity="Area"
+        unit="m2"/>
+    </SimpleType>
+    <SimpleType
+      name="Modelica.SIunits.Efficiency">
+      <Real
+        quantity="Efficiency"
+        unit="1"
+        min="0.0"/>
+    </SimpleType>
+    <SimpleType
+      name="Modelica.SIunits.HeatFlowRate">
+      <Real
+        quantity="Power"
+        unit="W"/>
+    </SimpleType>
+    <SimpleType
+      name="Modelica.SIunits.Irradiance">
+      <Real
+        quantity="Irradiance"
+        unit="W/m2"/>
+    </SimpleType>
+    <SimpleType
+      name="Modelica.SIunits.Length">
+      <Real
+        quantity="Length"
+        unit="m"/>
+    </SimpleType>
+    <SimpleType
+      name="Modelica.SIunits.Power">
+      <Real
+        quantity="Power"
+        unit="W"/>
+    </SimpleType>
+    <SimpleType
+      name="Modelica.SIunits.RefractiveIndex">
+      <Real
+        quantity="RefractiveIndex"
+        unit="1"/>
+    </SimpleType>
+    <SimpleType
+      name="Modelica.SIunits.Temp_C">
+      <Real
+        quantity="ThermodynamicTemperature"
+        unit="degC"/>
+    </SimpleType>
+    <SimpleType
+      name="Modelica.SIunits.Temperature">
+      <Real
+        quantity="ThermodynamicTemperature"
+        unit="K"
+        displayUnit="degC"
+        min="0.0"
+        nominal="300.0"/>
+    </SimpleType>
+    <SimpleType
+      name="Modelica.SIunits.Velocity">
+      <Real
+        quantity="Velocity"
+        unit="m/s"/>
+    </SimpleType>
+    <SimpleType
+      name="Modelica.Blocks.Types.Init">
+      <Enumeration>
+        <Item name="NoInit"
+          value="1"
+          description="No initialization (start values are used as guess values with fixed=false)"/>
+        <Item name="SteadyState"
+          value="2"
+          description="Steady state initialization (derivatives of states are zero)"/>
+        <Item name="InitialState"
+          value="3"
+          description="Initialization with initial states"/>
+        <Item name="InitialOutput"
+          value="4"
+          description="Initialization with initial outputs (and steady state of the states if possible)"/>
+      </Enumeration>
+    </SimpleType>
+  </TypeDefinitions>
+  <DefaultExperiment startTime="0.0"
+    stopTime="1.0"
+    tolerance="0.0001"/>
+  <ModelVariables>
+    <!-- Index for next variable = 1 -->
+    <ScalarVariable
+      name="epochOffset"
+      valueReference="16777216"
+      description="The time at the start of the simulation as Epoch in s"
+      causality="parameter"
+      variability="tunable">
+      <Integer start="0"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 2 -->
+    <ScalarVariable
+      name="fileName"
+      valueReference="134217728"
+      description="The path to the .mat-file containing _all_ parameter values"
+      causality="parameter"
+      variability="tunable">
+      <String
+        start="null"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 3 -->
+    <ScalarVariable
+      name="diffuseHorizontalIrradiance"
+      valueReference="352321536"
+      description="Diffuse irradiance in horizontal plane"
+      causality="input">
+      <Real
+        declaredType="Modelica.Blocks.Interfaces.RealInput"
+        unit="W/m2"
+        start="0.0"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 4 -->
+    <ScalarVariable
+      name="directHorizontalIrradiance"
+      valueReference="352321537"
+      description="Direct irradiance in horizontal plane"
+      causality="input">
+      <Real
+        declaredType="Modelica.Blocks.Interfaces.RealInput"
+        unit="W/m2"
+        start="0.0"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 5 -->
+    <ScalarVariable
+      name="temperature"
+      valueReference="352321538"
+      description="The temperature at the plant&#39;s site (optional input)"
+      causality="input">
+      <Real
+        declaredType="Modelica.Blocks.Interfaces.RealInput"
+        unit="K"
+        min="0.0"
+        nominal="300.0"
+        start="288.15"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 6 -->
+    <ScalarVariable
+      name="windSpeed"
+      valueReference="352321539"
+      description="The wind speed at the plant&#39;s site (optional input)"
+      causality="input">
+      <Real
+        declaredType="Modelica.Blocks.Interfaces.RealInput"
+        start="0.0"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 7 -->
+    <ScalarVariable
+      name="powerDC"
+      valueReference="335544320"
+      description="The generated power on the DC side"
+      causality="output">
+      <Real
+        declaredType="Modelica.Blocks.Interfaces.RealOutput"
+        unit="W"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 8 -->
+    <ScalarVariable
+      name="totalEnergyDC"
+      valueReference="335544321"
+      description="The generated energy on the DC side"
+      causality="output">
+      <Real
+        declaredType="Modelica.Blocks.Interfaces.RealOutput"
+        unit="kW.h"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 9 -->
+    <ScalarVariable
+      name="angleOfSunAboveHorizon"
+      valueReference="335544322"
+      description="Angle of Sun above horizon"
+      causality="output">
+      <Real
+        declaredType="Modelica.Blocks.Interfaces.RealOutput"
+        unit="deg"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 10 -->
+    <ScalarVariable
+      name="angleOfIncidence"
+      valueReference="335544323"
+      description="The angle of incidence between surface normal and sun beam"
+      causality="output">
+      <Real
+        declaredType="Modelica.Blocks.Interfaces.RealOutput"
+        unit="deg"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 11 -->
+    <ScalarVariable
+      name="irradianceTemperatureWindSpeed2Power.epochOffset"
+      valueReference="100663296"
+      description="The time at the start of the simulation as Epoch in s"
+      variability="tunable">
+      <Integer/>
+    </ScalarVariable>
+    <!-- Index for next variable = 12 -->
+    <ScalarVariable
+      name="irradianceTemperatureWindSpeed2Power.constInverterEfficiency"
+      valueReference="16777217"
+      description="Constant overall efficiency of the DC-AC converter"
+      causality="parameter"
+      variability="tunable">
+      <Real
+        declaredType="Modelica.SIunits.Efficiency"
+        start="1"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 13 -->
+    <ScalarVariable
+      name="irradianceTemperatureWindSpeed2Power.location.latitude"
+      valueReference="100663297"
+      description="Latitude in decimal degrees"
+      variability="tunable">
+      <Real
+        unit="deg"
+        min="-90.0"
+        max="90.0"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 14 -->
+    <ScalarVariable
+      name="irradianceTemperatureWindSpeed2Power.location.longitude"
+      valueReference="100663298"
+      description="Longitude in decimal degrees"
+      variability="tunable">
+      <Real
+        unit="deg"
+        min="-180.0"
+        max="180.0"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 15 -->
+    <ScalarVariable
+      name="irradianceTemperatureWindSpeed2Power.location.elevation"
+      valueReference="100663299"
+      description="Height above sea level (elevation) in metres"
+      variability="tunable">
+      <Real
+        unit="m"
+        min="0.0"
+        max="8848.0"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 16 -->
+    <ScalarVariable
+      name="irradianceTemperatureWindSpeed2Power.plantRecord.panelArea"
+      valueReference="100663300"
+      description="Overall surface area of all panels (combined)"
+      variability="tunable">
+      <Real
+        declaredType="Modelica.SIunits.Area"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 17 -->
+    <ScalarVariable
+      name="irradianceTemperatureWindSpeed2Power.plantRecord.plantEfficiency"
+      valueReference="100663301"
+      description="Overall efficiency"
+      variability="tunable">
+      <Real
+        declaredType="Modelica.SIunits.Efficiency"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 18 -->
+    <ScalarVariable
+      name="irradianceTemperatureWindSpeed2Power.plantRecord.T_cell_ref"
+      valueReference="100663302"
+      description="PV cell temperature at reference conditions (usually STC)"
+      variability="tunable">
+      <Real
+        declaredType="Modelica.SIunits.Temp_C"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 19 -->
+    <ScalarVariable
+      name="irradianceTemperatureWindSpeed2Power.plantRecord.panelTilt"
+      valueReference="100663303"
+      description="Surface tilt in degree (Horizontal equals 0°, vertical equals 90°)"
+      variability="tunable">
+      <Real
+        unit="deg"
+        min="0.0"
+        max="90.0"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 20 -->
+    <ScalarVariable
+      name="irradianceTemperatureWindSpeed2Power.plantRecord.panelAzimuth"
+      valueReference="100663304"
+      description="Surface azimuth in degree (South equals 0°, positive towards east)"
+      variability="tunable">
+      <Real
+        unit="deg"
+        min="-180.0"
+        max="180.0"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 21 -->
+    <ScalarVariable
+      name="irradianceTemperatureWindSpeed2Power.plantRecord.environmentAlbedo"
+      valueReference="100663305"
+      description="Albedo for isotropic estimation of irradiance by reflection"
+      variability="tunable">
+      <Real min="0.0"
+        max="1.0"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 22 -->
+    <ScalarVariable
+      name="irradianceTemperatureWindSpeed2Power.plantRecord.nsModule"
+      valueReference="16777218"
+      description="Number of series connected modules (PhotoVoltaicsLib only)"
+      causality="parameter"
+      variability="fixed">
+      <Integer start="1"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 23 -->
+    <ScalarVariable
+      name="irradianceTemperatureWindSpeed2Power.plantRecord.npModule"
+      valueReference="16777219"
+      description="Number of parallel connected modules (PhotoVoltaicsLib only)"
+      causality="parameter"
+      variability="fixed">
+      <Integer start="1"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 24 -->
+    <ScalarVariable
+      name="irradianceTemperatureWindSpeed2Power.plantModel.epochOffset"
+      valueReference="100663306"
+      description="The time at the start of the simulation as Epoch in s"
+      variability="tunable">
+      <Integer/>
+    </ScalarVariable>
+    <!-- Index for next variable = 25 -->
+    <ScalarVariable
+      name="irradianceTemperatureWindSpeed2Power.plantModel.constTemperature"
+      valueReference="16777220"
+      description="Fixed environment temperature if useTemperatureInput = false"
+      causality="parameter"
+      variability="fixed">
+      <Real
+        declaredType="Modelica.SIunits.Temperature"
+        start="293.15"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 26 -->
+    <ScalarVariable
+      name="irradianceTemperatureWindSpeed2Power.plantModel.constWindSpeed"
+      valueReference="16777221"
+      description="Fixed wind speed value if useWindSpeedInput = false"
+      causality="parameter"
+      variability="fixed">
+      <Real
+        declaredType="Modelica.SIunits.Velocity"
+        start="1"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 27 -->
+    <ScalarVariable
+      name="irradianceTemperatureWindSpeed2Power.plantModel.latitude"
+      valueReference="100663309"
+      description="Latitude in decimal degrees"
+      variability="tunable">
+      <Real
+        unit="deg"
+        min="-90.0"
+        max="90.0"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 28 -->
+    <ScalarVariable
+      name="irradianceTemperatureWindSpeed2Power.plantModel.longitude"
+      valueReference="100663310"
+      description="Longitude in decimal degrees"
+      variability="tunable">
+      <Real
+        unit="deg"
+        min="-180.0"
+        max="180.0"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 29 -->
+    <ScalarVariable
+      name="irradianceTemperatureWindSpeed2Power.plantModel.elevation"
+      valueReference="100663311"
+      description="Height above sea level (elevation) in metres"
+      variability="tunable">
+      <Real
+        unit="m"
+        min="0.0"
+        max="8848.0"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 30 -->
+    <ScalarVariable
+      name="irradianceTemperatureWindSpeed2Power.plantModel.arrayTilt"
+      valueReference="100663312"
+      description="Array tilt in degree (horizontal equals 0°, vertical equals 90°)"
+      variability="tunable">
+      <Real
+        declaredType="Modelica.SIunits.Angle"
+        min="0.0"
+        max="90.0"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 31 -->
+    <ScalarVariable
+      name="irradianceTemperatureWindSpeed2Power.plantModel.arrayAzimuth"
+      valueReference="100663313"
+      description="Array azimuth in degree (South equals 0°, positive towards east)"
+      variability="tunable">
+      <Real
+        declaredType="Modelica.SIunits.Angle"
+        min="-180.0"
+        max="180.0"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 32 -->
+    <ScalarVariable
+      name="irradianceTemperatureWindSpeed2Power.plantModel.albedo"
+      valueReference="100663314"
+      description="Ground reflectance/Albedo"
+      variability="tunable">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 33 -->
+    <ScalarVariable
+      name="irradianceTemperatureWindSpeed2Power.plantModel.panelArea"
+      valueReference="100663315"
+      description="Overall surface area of all panels (combined)"
+      variability="tunable">
+      <Real
+        declaredType="Modelica.SIunits.Area"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 34 -->
+    <ScalarVariable
+      name="irradianceTemperatureWindSpeed2Power.plantModel.plantEfficiency"
+      valueReference="100663316"
+      description="Overall plant efficiency"
+      variability="tunable">
+      <Real
+        declaredType="Modelica.SIunits.Efficiency"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 35 -->
+    <ScalarVariable
+      name="irradianceTemperatureWindSpeed2Power.plantModel.T_cell_ref"
+      valueReference="100663317"
+      description="PV cell temperature at reference conditions (usually STC)"
+      variability="tunable">
+      <Real
+        declaredType="Modelica.SIunits.Temp_C"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 36 -->
+    <ScalarVariable
+      name="irradianceTemperatureWindSpeed2Power.plantModel.diffuseHorizontalIrradiance"
+      valueReference="436207616"
+      description="Diffuse irradiance in horizontal plane">
+      <Real
+        declaredType="Modelica.Blocks.Interfaces.RealInput"
+        unit="W/m2"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 37 -->
+    <ScalarVariable
+      name="irradianceTemperatureWindSpeed2Power.plantModel.directHorizontalIrradiance"
+      valueReference="436207617"
+      description="Direct irradiance in horizontal plane">
+      <Real
+        declaredType="Modelica.Blocks.Interfaces.RealInput"
+        unit="W/m2"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 38 -->
+    <ScalarVariable
+      name="irradianceTemperatureWindSpeed2Power.plantModel.temperature"
+      valueReference="436207618"
+      description="The temperature at the plant&#39;s site (optional input)">
+      <Real
+        declaredType="Modelica.Blocks.Interfaces.RealInput"
+        unit="K"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 39 -->
+    <ScalarVariable
+      name="irradianceTemperatureWindSpeed2Power.plantModel.powerDC"
+      valueReference="335544320"
+      description="The generated power on the DC side">
+      <Real
+        declaredType="Modelica.Blocks.Interfaces.RealOutput"
+        unit="W"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 40 -->
+    <ScalarVariable
+      name="irradianceTemperatureWindSpeed2Power.plantModel.inclinationAndShadowing.arrayTilt"
+      valueReference="100663318"
+      description="Array tilt in degree (horizontal equals 0°, vertical equals 90°)"
+      variability="tunable">
+      <Real
+        declaredType="Modelica.SIunits.Angle"
+        min="0.0"
+        max="90.0"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 41 -->
+    <ScalarVariable
+      name="irradianceTemperatureWindSpeed2Power.plantModel.inclinationAndShadowing.arrayAzimuth"
+      valueReference="100663319"
+      description="Array azimuth in degree (South equals 0°, positive towards west)"
+      variability="tunable">
+      <Real
+        declaredType="Modelica.SIunits.Angle"
+        min="-180.0"
+        max="180.0"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 42 -->
+    <ScalarVariable
+      name="irradianceTemperatureWindSpeed2Power.plantModel.inclinationAndShadowing.albedo"
+      valueReference="16777222"
+      description="Ground reflectance/Albedo"
+      causality="parameter"
+      variability="tunable">
+      <Real min="0.0"
+        max="1.0"
+        start="0.2"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 43 -->
+    <ScalarVariable
+      name="irradianceTemperatureWindSpeed2Power.plantModel.inclinationAndShadowing.diffuseHorizontalIrradiance"
+      valueReference="369098776"
+      description="Diffuse irradiance in horizontal plane">
+      <Real
+        declaredType="Modelica.Blocks.Interfaces.RealInput"
+        unit="W/m2"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 44 -->
+    <ScalarVariable
+      name="irradianceTemperatureWindSpeed2Power.plantModel.inclinationAndShadowing.directHorizontalIrradiance"
+      valueReference="369098777"
+      description="Direct irradiance in horizontal plane">
+      <Real
+        declaredType="Modelica.Blocks.Interfaces.RealInput"
+        unit="W/m2"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 45 -->
+    <ScalarVariable
+      name="irradianceTemperatureWindSpeed2Power.plantModel.inclinationAndShadowing.diffuseInclinedIrradiance"
+      valueReference="369098778"
+      description="Diffuse irradiance on arbitrarily oriented surface">
+      <Real
+        declaredType="Modelica.Blocks.Interfaces.RealOutput"
+        unit="W/m2"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 46 -->
+    <ScalarVariable
+      name="irradianceTemperatureWindSpeed2Power.plantModel.inclinationAndShadowing.directInclinedIrradiance"
+      valueReference="369098779"
+      description="Direct irradiance on arbitrarily oriented surface">
+      <Real
+        declaredType="Modelica.Blocks.Interfaces.RealOutput"
+        unit="W/m2"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 47 -->
+    <ScalarVariable
+      name="irradianceTemperatureWindSpeed2Power.plantModel.inclinationAndShadowing.reflectedInclinedIrradiance"
+      valueReference="369098780"
+      description="Irradiance due to reflection on arbitrarily oriented surface">
+      <Real
+        declaredType="Modelica.Blocks.Interfaces.RealOutput"
+        unit="W/m2"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 48 -->
+    <ScalarVariable
+      name="irradianceTemperatureWindSpeed2Power.plantModel.inclinationAndShadowing.solarAzimuth"
+      valueReference="369098781"
+      description="The azimuth angle of the sun">
+      <Real
+        declaredType="Modelica.Blocks.Interfaces.RealInput"
+        unit="deg"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 49 -->
+    <ScalarVariable
+      name="irradianceTemperatureWindSpeed2Power.plantModel.inclinationAndShadowing.solarZenith"
+      valueReference="369098782"
+      description="The zenith angle of the sun">
+      <Real
+        declaredType="Modelica.Blocks.Interfaces.RealInput"
+        unit="deg"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 50 -->
+    <ScalarVariable
+      name="irradianceTemperatureWindSpeed2Power.plantModel.inclinationAndShadowing.angleOfIncidence"
+      valueReference="369098891"
+      description="The angle of incidence between surface normal and sun beam">
+      <Real
+        declaredType="Modelica.Blocks.Interfaces.RealOutput"
+        unit="rad"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 51 -->
+    <ScalarVariable
+      name="irradianceTemperatureWindSpeed2Power.plantModel.inclinationAndShadowing.angleOfIncidenceAsBlock.arrayTilt"
+      valueReference="100663327"
+      description="Array tilt angle"
+      variability="tunable">
+      <Real
+        declaredType="Modelica.SIunits.Angle"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 52 -->
+    <ScalarVariable
+      name="irradianceTemperatureWindSpeed2Power.plantModel.inclinationAndShadowing.angleOfIncidenceAsBlock.arrayAzimuth"
+      valueReference="100663328"
+      description="Azimuth angle of array"
+      variability="tunable">
+      <Real
+        declaredType="Modelica.SIunits.Angle"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 53 -->
+    <ScalarVariable
+      name="irradianceTemperatureWindSpeed2Power.plantModel.inclinationAndShadowing.angleOfIncidenceAsBlock.solarZenith"
+      valueReference="369098782"
+      description="Solar zenith angle">
+      <Real
+        declaredType="Modelica.Blocks.Interfaces.RealInput"
+        unit="deg"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 54 -->
+    <ScalarVariable
+      name="irradianceTemperatureWindSpeed2Power.plantModel.inclinationAndShadowing.angleOfIncidenceAsBlock.solarAzimuth"
+      valueReference="369098781"
+      description="Solar azimuth angle">
+      <Real
+        declaredType="Modelica.Blocks.Interfaces.RealInput"
+        unit="deg"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 55 -->
+    <ScalarVariable
+      name="irradianceTemperatureWindSpeed2Power.plantModel.inclinationAndShadowing.angleOfIncidenceAsBlock.angleOfIncidence"
+      valueReference="369098891"
+      description="Angle of incidence between surface normal and sun beam">
+      <Real
+        declaredType="Modelica.Blocks.Interfaces.RealOutput"
+        unit="rad"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 56 -->
+    <ScalarVariable
+      name="irradianceTemperatureWindSpeed2Power.plantModel.inclinationAndShadowing.angleOfIncidenceAsBlock.arrayAzimuthSolarCS"
+      valueReference="100663329"
+      description="Array azimuth in the same coordinate system as the sun&#39;s position"
+      variability="tunable">
+      <Real
+        declaredType="Modelica.SIunits.Angle"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 57 -->
+    <ScalarVariable
+      name="irradianceTemperatureWindSpeed2Power.plantModel.inclinationAndShadowing.angleOfIncidenceAsBlock.solarHeight"
+      valueReference="905969698"
+      description="Height of the sun">
+      <Real
+        declaredType="Modelica.SIunits.Angle"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 58 -->
+    <ScalarVariable
+      name="irradianceTemperatureWindSpeed2Power.plantModel.inclinationAndShadowing.direct.solarZenith"
+      valueReference="369098782"
+      description="Solar zenith angle">
+      <Real
+        declaredType="Modelica.Blocks.Interfaces.RealInput"
+        unit="deg"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 59 -->
+    <ScalarVariable
+      name="irradianceTemperatureWindSpeed2Power.plantModel.inclinationAndShadowing.direct.directHorizontalIrradiance"
+      valueReference="369098777"
+      description="Direct irradiance in horizontal plane">
+      <Real
+        declaredType="Modelica.Blocks.Interfaces.RealInput"
+        unit="W/m2"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 60 -->
+    <ScalarVariable
+      name="irradianceTemperatureWindSpeed2Power.plantModel.inclinationAndShadowing.direct.angleOfIncidence"
+      valueReference="369098891"
+      description="Direct irradiance in horizontal plane">
+      <Real
+        declaredType="Modelica.Blocks.Interfaces.RealInput"
+        unit="rad"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 61 -->
+    <ScalarVariable
+      name="irradianceTemperatureWindSpeed2Power.plantModel.inclinationAndShadowing.direct.directInclinedIrradiance"
+      valueReference="369098779"
+      description="Direct irradiance on inclined surface">
+      <Real
+        declaredType="Modelica.Blocks.Interfaces.RealOutput"
+        unit="W/m2"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 62 -->
+    <ScalarVariable
+      name="irradianceTemperatureWindSpeed2Power.plantModel.inclinationAndShadowing.direct.solarHeight"
+      valueReference="369098788"
+      description="Height of the sun">
+      <Real
+        declaredType="Modelica.SIunits.Angle"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 63 -->
+    <ScalarVariable
+      name="irradianceTemperatureWindSpeed2Power.plantModel.inclinationAndShadowing.globalHorizontalIrradiance.u1"
+      valueReference="369098790"
+      description="Connector of Real input signal 1">
+      <Real
+        declaredType="Modelica.Blocks.Interfaces.RealInput"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 64 -->
+    <ScalarVariable
+      name="irradianceTemperatureWindSpeed2Power.plantModel.inclinationAndShadowing.globalHorizontalIrradiance.u2"
+      valueReference="369098793"
+      description="Connector of Real input signal 2">
+      <Real
+        declaredType="Modelica.Blocks.Interfaces.RealInput"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 65 -->
+    <ScalarVariable
+      name="irradianceTemperatureWindSpeed2Power.plantModel.inclinationAndShadowing.globalHorizontalIrradiance.y"
+      valueReference="369098794"
+      description="Connector of Real output signal">
+      <Real
+        declaredType="Modelica.Blocks.Interfaces.RealOutput"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 66 -->
+    <ScalarVariable
+      name="irradianceTemperatureWindSpeed2Power.plantModel.inclinationAndShadowing.globalHorizontalIrradiance.k1"
+      valueReference="16777223"
+      description="Gain of input signal 1"
+      causality="parameter"
+      variability="tunable">
+      <Real start="1"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 67 -->
+    <ScalarVariable
+      name="irradianceTemperatureWindSpeed2Power.plantModel.inclinationAndShadowing.globalHorizontalIrradiance.k2"
+      valueReference="16777224"
+      description="Gain of input signal 2"
+      causality="parameter"
+      variability="tunable">
+      <Real start="1"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 68 -->
+    <ScalarVariable
+      name="irradianceTemperatureWindSpeed2Power.plantModel.inclinationAndShadowing.diffusePerez.rho"
+      valueReference="100663339"
+      description="Ground reflectance"
+      variability="tunable">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 69 -->
+    <ScalarVariable
+      name="irradianceTemperatureWindSpeed2Power.plantModel.inclinationAndShadowing.diffusePerez.til"
+      valueReference="100663340"
+      description="Surface tilt angle"
+      variability="tunable">
+      <Real
+        declaredType="Modelica.SIunits.Angle"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 70 -->
+    <ScalarVariable
+      name="irradianceTemperatureWindSpeed2Power.plantModel.inclinationAndShadowing.diffusePerez.briCof1"
+      valueReference="369098797"
+      description="Brightening Coeffcient F1">
+      <Real
+        declaredType="Modelica.Blocks.Interfaces.RealInput"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 71 -->
+    <ScalarVariable
+      name="irradianceTemperatureWindSpeed2Power.plantModel.inclinationAndShadowing.diffusePerez.briCof2"
+      valueReference="369098798"
+      description="Brightening Coeffcient F2">
+      <Real
+        declaredType="Modelica.Blocks.Interfaces.RealInput"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 72 -->
+    <ScalarVariable
+      name="irradianceTemperatureWindSpeed2Power.plantModel.inclinationAndShadowing.diffusePerez.HDifHor"
+      valueReference="369098776"
+      description="Diffuse horizontal solar radiation">
+      <Real
+        declaredType="Modelica.Blocks.Interfaces.RealInput"
+        quantity="RadiantEnergyFluenceRate"
+        unit="W/m2"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 73 -->
+    <ScalarVariable
+      name="irradianceTemperatureWindSpeed2Power.plantModel.inclinationAndShadowing.diffusePerez.HGloHor"
+      valueReference="369098799"
+      description="Global horizontal radiation">
+      <Real
+        declaredType="Modelica.Blocks.Interfaces.RealInput"
+        quantity="RadiantEnergyFluenceRate"
+        unit="W/m2"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 74 -->
+    <ScalarVariable
+      name="irradianceTemperatureWindSpeed2Power.plantModel.inclinationAndShadowing.diffusePerez.zen"
+      valueReference="369098800"
+      description="Zenith angle of the sun beam">
+      <Real
+        declaredType="Modelica.Blocks.Interfaces.RealInput"
+        quantity="Angle"
+        unit="rad"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 75 -->
+    <ScalarVariable
+      name="irradianceTemperatureWindSpeed2Power.plantModel.inclinationAndShadowing.diffusePerez.incAng"
+      valueReference="369098891"
+      description="Solar incidence angle on the surface">
+      <Real
+        declaredType="Modelica.Blocks.Interfaces.RealInput"
+        quantity="Angle"
+        unit="rad"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 76 -->
+    <ScalarVariable
+      name="irradianceTemperatureWindSpeed2Power.plantModel.inclinationAndShadowing.diffusePerez.HGroDifTil"
+      valueReference="369098780"
+      description="Hemispherical diffuse solar irradiation on a tilted surface from the ground">
+      <Real
+        declaredType="Modelica.Blocks.Interfaces.RealOutput"
+        quantity="RadiantEnergyFluenceRate"
+        unit="W/m2"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 77 -->
+    <ScalarVariable
+      name="irradianceTemperatureWindSpeed2Power.plantModel.inclinationAndShadowing.diffusePerez.HSkyDifTil"
+      valueReference="369098778"
+      description="Hemispherical diffuse solar irradiation on a tilted surface from the sky">
+      <Real
+        declaredType="Modelica.Blocks.Interfaces.RealOutput"
+        quantity="RadiantEnergyFluenceRate"
+        unit="W/m2"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 78 -->
+    <ScalarVariable
+      name="irradianceTemperatureWindSpeed2Power.plantModel.inclinationAndShadowing.briCoe.zen"
+      valueReference="369098800"
+      description="Zenith angle of the sun beam">
+      <Real
+        declaredType="Modelica.Blocks.Interfaces.RealInput"
+        quantity="Angle"
+        unit="rad"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 79 -->
+    <ScalarVariable
+      name="irradianceTemperatureWindSpeed2Power.plantModel.inclinationAndShadowing.briCoe.skyCle"
+      valueReference="369098804"
+      description="Sky clearness. skyCle=1: overcast sky; skyCle=8 clear sky">
+      <Real
+        declaredType="Modelica.Blocks.Interfaces.RealInput"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 80 -->
+    <ScalarVariable
+      name="irradianceTemperatureWindSpeed2Power.plantModel.inclinationAndShadowing.briCoe.skyBri"
+      valueReference="369098805"
+      description="Sky brightness [0,1]">
+      <Real
+        declaredType="Modelica.Blocks.Interfaces.RealInput"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 81 -->
+    <ScalarVariable
+      name="irradianceTemperatureWindSpeed2Power.plantModel.inclinationAndShadowing.briCoe.F1"
+      valueReference="369098797"
+      description="Circumsolar brightening coefficient">
+      <Real
+        declaredType="Modelica.Blocks.Interfaces.RealOutput"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 82 -->
+    <ScalarVariable
+      name="irradianceTemperatureWindSpeed2Power.plantModel.inclinationAndShadowing.briCoe.F2"
+      valueReference="369098798"
+      description="Horizon brightening coefficient">
+      <Real
+        declaredType="Modelica.Blocks.Interfaces.RealOutput"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 83 -->
+    <ScalarVariable
+      name="irradianceTemperatureWindSpeed2Power.plantModel.inclinationAndShadowing.from_deg.u"
+      valueReference="369098827"
+      description="Connector of Real input signal to be converted">
+      <Real
+        declaredType="Modelica.Blocks.Interfaces.RealInput"
+        unit="deg"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 84 -->
+    <ScalarVariable
+      name="irradianceTemperatureWindSpeed2Power.plantModel.inclinationAndShadowing.from_deg.y"
+      valueReference="369098828"
+      description="Connector of Real output signal containing input signal u in another unit">
+      <Real
+        declaredType="Modelica.Blocks.Interfaces.RealOutput"
+        unit="rad"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 85 -->
+    <ScalarVariable
+      name="irradianceTemperatureWindSpeed2Power.plantModel.inclinationAndShadowing.skyCle.zen"
+      valueReference="369098829"
+      description="Zenith angle of the sun beam">
+      <Real
+        declaredType="Modelica.Blocks.Interfaces.RealInput"
+        quantity="Angle"
+        unit="rad"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 86 -->
+    <ScalarVariable
+      name="irradianceTemperatureWindSpeed2Power.plantModel.inclinationAndShadowing.skyCle.HDifHor"
+      valueReference="369098776"
+      description="Horizontal diffuse solar radiation">
+      <Real
+        declaredType="Modelica.Blocks.Interfaces.RealInput"
+        quantity="RadiantEnergyFluenceRate"
+        unit="W/m2"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 87 -->
+    <ScalarVariable
+      name="irradianceTemperatureWindSpeed2Power.plantModel.inclinationAndShadowing.skyCle.HGloHor"
+      valueReference="369098799"
+      description="Horizontal global solar radiation">
+      <Real
+        declaredType="Modelica.Blocks.Interfaces.RealInput"
+        quantity="RadiantEnergyFluenceRate"
+        unit="W/m2"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 88 -->
+    <ScalarVariable
+      name="irradianceTemperatureWindSpeed2Power.plantModel.inclinationAndShadowing.skyCle.skyCle"
+      valueReference="369098804"
+      description="Sky clearness. skyCle=1: overast sky; skyCle=8: clear sky">
+      <Real
+        declaredType="Modelica.Blocks.Interfaces.RealOutput"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 89 -->
+    <ScalarVariable
+      name="irradianceTemperatureWindSpeed2Power.plantModel.inclinationAndShadowing.skyBri.relAirMas"
+      valueReference="369098835"
+      description="Relative air mass">
+      <Real
+        declaredType="Modelica.Blocks.Interfaces.RealInput"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 90 -->
+    <ScalarVariable
+      name="irradianceTemperatureWindSpeed2Power.plantModel.inclinationAndShadowing.skyBri.HDifHor"
+      valueReference="369098776"
+      description="Horizontal diffuse solar radiation">
+      <Real
+        declaredType="Modelica.Blocks.Interfaces.RealInput"
+        quantity="RadiantEnergyFluenceRate"
+        unit="W/m2"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 91 -->
+    <ScalarVariable
+      name="irradianceTemperatureWindSpeed2Power.plantModel.inclinationAndShadowing.skyBri.skyBri"
+      valueReference="369098805"
+      description="Sky brightness">
+      <Real
+        declaredType="Modelica.Blocks.Interfaces.RealOutput"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 92 -->
+    <ScalarVariable
+      name="irradianceTemperatureWindSpeed2Power.plantModel.inclinationAndShadowing.relAirMas.zen"
+      valueReference="369098800"
+      description="Zenith angle of the sun beam">
+      <Real
+        declaredType="Modelica.Blocks.Interfaces.RealInput"
+        quantity="Angle"
+        unit="rad"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 93 -->
+    <ScalarVariable
+      name="irradianceTemperatureWindSpeed2Power.plantModel.inclinationAndShadowing.relAirMas.relAirMas"
+      valueReference="369098835"
+      description="Relative air mass">
+      <Real
+        declaredType="Modelica.Blocks.Interfaces.RealOutput"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 94 -->
+    <ScalarVariable
+      name="irradianceTemperatureWindSpeed2Power.plantModel.globalIrradiance.k1"
+      valueReference="16777225"
+      description="Gain of input signal 1"
+      causality="parameter"
+      variability="tunable">
+      <Real start="1"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 95 -->
+    <ScalarVariable
+      name="irradianceTemperatureWindSpeed2Power.plantModel.globalIrradiance.k2"
+      valueReference="16777226"
+      description="Gain of input signal 2"
+      causality="parameter"
+      variability="tunable">
+      <Real start="1"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 96 -->
+    <ScalarVariable
+      name="irradianceTemperatureWindSpeed2Power.plantModel.globalIrradiance.k3"
+      valueReference="16777227"
+      description="Gain of input signal 3"
+      causality="parameter"
+      variability="tunable">
+      <Real start="1"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 97 -->
+    <ScalarVariable
+      name="irradianceTemperatureWindSpeed2Power.plantModel.globalIrradiance.u1"
+      valueReference="369098838"
+      description="Connector of Real input signal 1">
+      <Real
+        declaredType="Modelica.Blocks.Interfaces.RealInput"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 98 -->
+    <ScalarVariable
+      name="irradianceTemperatureWindSpeed2Power.plantModel.globalIrradiance.u2"
+      valueReference="369098839"
+      description="Connector of Real input signal 2">
+      <Real
+        declaredType="Modelica.Blocks.Interfaces.RealInput"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 99 -->
+    <ScalarVariable
+      name="irradianceTemperatureWindSpeed2Power.plantModel.globalIrradiance.u3"
+      valueReference="369098840"
+      description="Connector of Real input signal 3">
+      <Real
+        declaredType="Modelica.Blocks.Interfaces.RealInput"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 100 -->
+    <ScalarVariable
+      name="irradianceTemperatureWindSpeed2Power.plantModel.globalIrradiance.y"
+      valueReference="369098841"
+      description="Connector of Real output signal">
+      <Real
+        declaredType="Modelica.Blocks.Interfaces.RealOutput"
+        min="0.0"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 101 -->
+    <ScalarVariable
+      name="irradianceTemperatureWindSpeed2Power.plantModel.plantIrradianceNormal.T"
+      valueReference="16777228"
+      description="Fixed device temperature if useHeatPort = false"
+      causality="parameter"
+      variability="fixed">
+      <Real
+        declaredType="Modelica.SIunits.Temperature"
+        start="293.15"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 102 -->
+    <ScalarVariable
+      name="irradianceTemperatureWindSpeed2Power.plantModel.plantIrradianceNormal.heatPort.T"
+      valueReference="905969793"
+      description="Port temperature">
+      <Real
+        declaredType="Modelica.SIunits.Temperature"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 103 -->
+    <ScalarVariable
+      name="irradianceTemperatureWindSpeed2Power.plantModel.plantIrradianceNormal.heatPort.Q_flow"
+      valueReference="100663387"
+      description="Heat flow rate (positive if flowing from outside into the component)"
+      variability="constant">
+      <Real
+        declaredType="Modelica.SIunits.HeatFlowRate"
+        start="0.0"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 104 -->
+    <ScalarVariable
+      name="irradianceTemperatureWindSpeed2Power.plantModel.plantIrradianceNormal.I_G_normal"
+      valueReference="369098850"
+      description="Total irradiance normal to module surface">
+      <Real
+        declaredType="Modelica.Blocks.Interfaces.RealInput"
+        unit="W/m2"
+        min="0.0"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 105 -->
+    <ScalarVariable
+      name="irradianceTemperatureWindSpeed2Power.plantModel.plantIrradianceNormal.P_DC"
+      valueReference="369098845"
+      description="Generated power across all panels">
+      <Real
+        declaredType="Modelica.Blocks.Interfaces.RealOutput"
+        unit="W"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 106 -->
+    <ScalarVariable
+      name="irradianceTemperatureWindSpeed2Power.plantModel.plantIrradianceNormal.angleOfIncidence"
+      valueReference="369098891"
+      description="Angle between direct beam and surface normal">
+      <Real
+        declaredType="Modelica.Blocks.Interfaces.RealInput"
+        unit="rad"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 107 -->
+    <ScalarVariable
+      name="irradianceTemperatureWindSpeed2Power.plantModel.plantIrradianceNormal.u"
+      valueReference="905969758"
+      description="Wind speed in PV plane">
+      <Real
+        declaredType="Modelica.Blocks.Interfaces.RealInput"
+        unit="m/s"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 108 -->
+    <ScalarVariable
+      name="irradianceTemperatureWindSpeed2Power.plantModel.plantIrradianceNormal.A_PV"
+      valueReference="100663391"
+      description="The total area of the PV modules"
+      variability="tunable">
+      <Real
+        declaredType="Modelica.SIunits.Area"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 109 -->
+    <ScalarVariable
+      name="irradianceTemperatureWindSpeed2Power.plantModel.plantIrradianceNormal.eta_ref"
+      valueReference="100663392"
+      description="Electrical efficiency at reference conditions"
+      variability="tunable">
+      <Real
+        declaredType="Modelica.SIunits.Efficiency"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 110 -->
+    <ScalarVariable
+      name="irradianceTemperatureWindSpeed2Power.plantModel.plantIrradianceNormal.a"
+      valueReference="16777229"
+      description="Irradiance losses according to Heydenreich et al. (2008, equation 3); parameter a"
+      causality="parameter"
+      variability="tunable">
+      <Real
+        unit="m2/W"
+        start="-1.09E-05"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 111 -->
+    <ScalarVariable
+      name="irradianceTemperatureWindSpeed2Power.plantModel.plantIrradianceNormal.b"
+      valueReference="16777230"
+      description="Irradiance losses according to Heydenreich et al. (2008, equation 3); parameter b"
+      causality="parameter"
+      variability="tunable">
+      <Real start="-0.047"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 112 -->
+    <ScalarVariable
+      name="irradianceTemperatureWindSpeed2Power.plantModel.plantIrradianceNormal.c"
+      valueReference="16777231"
+      description="Irradiance losses according to Heydenreich et al. (2008, equation 3); parameter c"
+      causality="parameter"
+      variability="tunable">
+      <Real start="-1.4"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 113 -->
+    <ScalarVariable
+      name="irradianceTemperatureWindSpeed2Power.plantModel.plantIrradianceNormal.T_cell_ref"
+      valueReference="100663393"
+      description="PV cell temperature at reference conditions (usually STC)"
+      variability="tunable">
+      <Real
+        declaredType="Modelica.SIunits.Temp_C"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 114 -->
+    <ScalarVariable
+      name="irradianceTemperatureWindSpeed2Power.plantModel.plantIrradianceNormal.beta"
+      valueReference="16777232"
+      description="Power temperature coefficient"
+      causality="parameter"
+      variability="tunable">
+      <Real
+        unit="1/K"
+        start="0.0043"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 115 -->
+    <ScalarVariable
+      name="irradianceTemperatureWindSpeed2Power.plantModel.plantIrradianceNormal.U_0"
+      valueReference="16777233"
+      description="Heat loss coefficient of the PV module"
+      causality="parameter"
+      variability="tunable">
+      <Real
+        unit="W/(m2.K)"
+        start="25"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 116 -->
+    <ScalarVariable
+      name="irradianceTemperatureWindSpeed2Power.plantModel.plantIrradianceNormal.U_1"
+      valueReference="16777234"
+      description="Wind dependent heat loss coefficient of the PV module"
+      causality="parameter"
+      variability="tunable">
+      <Real
+        unit="W.s/(m3.K)"
+        start="6.84"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 117 -->
+    <ScalarVariable
+      name="irradianceTemperatureWindSpeed2Power.plantModel.plantIrradianceNormal.electricalPower"
+      valueReference="369098845"
+      description="Electrical power output">
+      <Real
+        declaredType="Modelica.SIunits.Power"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 118 -->
+    <ScalarVariable
+      name="irradianceTemperatureWindSpeed2Power.plantModel.plantIrradianceNormal.G"
+      valueReference="369098850"
+      description="Global irradiance on the PV array plane">
+      <Real
+        declaredType="Modelica.SIunits.Irradiance"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 119 -->
+    <ScalarVariable
+      name="irradianceTemperatureWindSpeed2Power.plantModel.plantIrradianceNormal.eta_electrical"
+      valueReference="369098851"
+      description="Overall or total electrical efficiency">
+      <Real
+        declaredType="Modelica.SIunits.Efficiency"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 120 -->
+    <ScalarVariable
+      name="irradianceTemperatureWindSpeed2Power.plantModel.plantIrradianceNormal.performanceRatioOverall"
+      valueReference="369098852"
+      description="Overall instantaneous performance ratio">
+      <Real
+        declaredType="Modelica.SIunits.Efficiency"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 121 -->
+    <ScalarVariable
+      name="irradianceTemperatureWindSpeed2Power.plantModel.plantIrradianceNormal.performanceRatioIrradiance"
+      valueReference="369098853"
+      description="Instantaneous performance ratio due to irradiance losses">
+      <Real
+        declaredType="Modelica.SIunits.Efficiency"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 122 -->
+    <ScalarVariable
+      name="irradianceTemperatureWindSpeed2Power.plantModel.plantIrradianceNormal.performanceRatioTemperature"
+      valueReference="369098854"
+      description="Instantaneous performance ratio to account for temperature dependency">
+      <Real
+        declaredType="Modelica.SIunits.Efficiency"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 123 -->
+    <ScalarVariable
+      name="irradianceTemperatureWindSpeed2Power.plantModel.plantIrradianceNormal.T_cell"
+      valueReference="369098855"
+      description="PV cell temperature">
+      <Real
+        declaredType="Modelica.SIunits.Temp_C"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 124 -->
+    <ScalarVariable
+      name="irradianceTemperatureWindSpeed2Power.plantModel.plantIrradianceNormal.performanceRatioIAM"
+      valueReference="369098856"
+      description="Instantaneous performance ratio due to incidence angle losses">
+      <Real
+        declaredType="Modelica.SIunits.Efficiency"
+        max="1.0"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 125 -->
+    <ScalarVariable
+      name="irradianceTemperatureWindSpeed2Power.plantModel.plantIrradianceNormal.physicalIAMmodel.n"
+      valueReference="16777235"
+      description="Refraction index of the cover glass"
+      causality="parameter"
+      variability="tunable">
+      <Real
+        declaredType="Modelica.SIunits.RefractiveIndex"
+        start="1.526"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 126 -->
+    <ScalarVariable
+      name="irradianceTemperatureWindSpeed2Power.plantModel.plantIrradianceNormal.physicalIAMmodel.K"
+      valueReference="16777236"
+      description="Glazing extinction coefficient"
+      causality="parameter"
+      variability="tunable">
+      <Real
+        unit="1/m"
+        start="4"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 127 -->
+    <ScalarVariable
+      name="irradianceTemperatureWindSpeed2Power.plantModel.plantIrradianceNormal.physicalIAMmodel.L"
+      valueReference="16777237"
+      description="Glazing thickness"
+      causality="parameter"
+      variability="tunable">
+      <Real
+        declaredType="Modelica.SIunits.Length"
+        start="0.002"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 128 -->
+    <ScalarVariable
+      name="irradianceTemperatureWindSpeed2Power.plantModel.plantIrradianceNormal.physicalIAMmodel.angleOfIncidence"
+      valueReference="369098891"
+      description="Angle between direct beam and surface normal">
+      <Real
+        declaredType="Modelica.Blocks.Interfaces.RealInput"
+        unit="rad"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 129 -->
+    <ScalarVariable
+      name="irradianceTemperatureWindSpeed2Power.plantModel.plantIrradianceNormal.physicalIAMmodel.incidenceAngleModifier"
+      valueReference="369098856"
+      description="Incident angle modifier for a given angle">
+      <Real
+        declaredType="Modelica.Blocks.Interfaces.RealOutput"
+        min="0.0"
+        max="1.0"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 130 -->
+    <ScalarVariable
+      name="irradianceTemperatureWindSpeed2Power.plantModel.plantIrradianceNormal.physicalIAMmodel.angleOfRefraction"
+      valueReference="369098857"
+      description="Angle of refraction">
+      <Real
+        declaredType="Modelica.SIunits.Angle"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 131 -->
+    <ScalarVariable
+      name="irradianceTemperatureWindSpeed2Power.plantModel.plantIrradianceNormal.physicalIAMmodel.tauTheta"
+      valueReference="369098858"
+      description="Transmittance at angle theta">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 132 -->
+    <ScalarVariable
+      name="irradianceTemperatureWindSpeed2Power.plantModel.plantIrradianceNormal.physicalIAMmodel.tauZero"
+      valueReference="100663403"
+      description="Transmittance when normal to the sun"
+      variability="tunable">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 133 -->
+    <ScalarVariable
+      name="irradianceTemperatureWindSpeed2Power.plantModel.integrator.k"
+      valueReference="16777238"
+      description="Integrator gain"
+      causality="parameter"
+      variability="tunable">
+      <Real
+        unit="1"
+        start="3.6E-06"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 134 -->
+    <ScalarVariable
+      name="irradianceTemperatureWindSpeed2Power.plantModel.integrator.initType"
+      valueReference="100663410"
+      description="Type of initialization (1: no init, 2: steady state, 3,4: initial output)"
+      variability="constant">
+      <Enumeration
+        declaredType="Modelica.Blocks.Types.Init"
+        start="3"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 135 -->
+    <ScalarVariable
+      name="irradianceTemperatureWindSpeed2Power.plantModel.integrator.y_start"
+      valueReference="16777239"
+      description="Initial or guess value of output (= state)"
+      causality="parameter"
+      variability="fixed">
+      <Real start="0"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 136 -->
+    <ScalarVariable
+      name="irradianceTemperatureWindSpeed2Power.plantModel.integrator.u"
+      valueReference="369098867"
+      description="Connector of Real input signal">
+      <Real
+        declaredType="Modelica.Blocks.Interfaces.RealInput"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 137 -->
+    <ScalarVariable
+      name="irradianceTemperatureWindSpeed2Power.plantModel.integrator.y"
+      valueReference="33554432"
+      description="Connector of Real output signal">
+      <Real
+        declaredType="Modelica.Blocks.Interfaces.RealOutput"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 138 -->
+    <ScalarVariable
+      name="der(irradianceTemperatureWindSpeed2Power.plantModel.integrator.y)"
+      valueReference="587202560"
+      description="der(Connector of Real output signal)">
+      <Real derivative="137"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 139 -->
+    <ScalarVariable
+      name="irradianceTemperatureWindSpeed2Power.plantModel.solarAzimuth.latitude"
+      valueReference="100663414"
+      description="Position north of entity"
+      variability="tunable">
+      <Real
+        unit="deg"
+        min="47.0"
+        max="56.0"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 140 -->
+    <ScalarVariable
+      name="irradianceTemperatureWindSpeed2Power.plantModel.solarAzimuth.longitude"
+      valueReference="100663415"
+      description="Position east of entity"
+      variability="tunable">
+      <Real
+        unit="deg"
+        min="5.0"
+        max="16.0"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 141 -->
+    <ScalarVariable
+      name="irradianceTemperatureWindSpeed2Power.plantModel.solarAzimuth.height_above_sealevel"
+      valueReference="100663416"
+      description="Height above sealevel of entity"
+      variability="tunable">
+      <Real
+        unit="m"
+        min="0.0"
+        max="4000.0"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 142 -->
+    <ScalarVariable
+      name="irradianceTemperatureWindSpeed2Power.plantModel.solarAzimuth.simu_start_epochs"
+      valueReference="100663417"
+      description="Offset between simulation time and unix time (epochs), default 01/01/2014"
+      variability="tunable">
+      <Real
+        unit="s"
+        min="0.0"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 143 -->
+    <ScalarVariable
+      name="irradianceTemperatureWindSpeed2Power.plantModel.solarAzimuth.epoch_time"
+      valueReference="369098874">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 144 -->
+    <ScalarVariable
+      name="irradianceTemperatureWindSpeed2Power.plantModel.solarAzimuth.y"
+      valueReference="369098875">
+      <Real
+        declaredType="Modelica.Blocks.Interfaces.RealOutput"
+        unit="deg"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 145 -->
+    <ScalarVariable
+      name="irradianceTemperatureWindSpeed2Power.plantModel.solarZenith.latitude"
+      valueReference="100663420"
+      description="Position north of entity"
+      variability="tunable">
+      <Real
+        unit="deg"
+        min="47.0"
+        max="56.0"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 146 -->
+    <ScalarVariable
+      name="irradianceTemperatureWindSpeed2Power.plantModel.solarZenith.longitude"
+      valueReference="100663421"
+      description="Position east of entity"
+      variability="tunable">
+      <Real
+        unit="deg"
+        min="5.0"
+        max="16.0"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 147 -->
+    <ScalarVariable
+      name="irradianceTemperatureWindSpeed2Power.plantModel.solarZenith.height_above_sealevel"
+      valueReference="100663422"
+      description="Height above sealevel of entity"
+      variability="tunable">
+      <Real
+        unit="m"
+        min="0.0"
+        max="4000.0"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 148 -->
+    <ScalarVariable
+      name="irradianceTemperatureWindSpeed2Power.plantModel.solarZenith.simu_start_epochs"
+      valueReference="100663423"
+      description="Offset between simulation time and unix time (epochs), default 01/01/2014"
+      variability="tunable">
+      <Real
+        unit="s"
+        min="0.0"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 149 -->
+    <ScalarVariable
+      name="irradianceTemperatureWindSpeed2Power.plantModel.solarZenith.epoch_time"
+      valueReference="369098880">
+      <Real/>
+    </ScalarVariable>
+    <!-- Index for next variable = 150 -->
+    <ScalarVariable
+      name="irradianceTemperatureWindSpeed2Power.plantModel.solarZenith.y"
+      valueReference="369098827">
+      <Real
+        declaredType="Modelica.Blocks.Interfaces.RealOutput"
+        unit="deg"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 151 -->
+    <ScalarVariable
+      name="irradianceTemperatureWindSpeed2Power.plantModel.environmentTemperature.port.T"
+      valueReference="905969793"
+      description="Port temperature">
+      <Real
+        declaredType="Modelica.SIunits.Temperature"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 152 -->
+    <ScalarVariable
+      name="irradianceTemperatureWindSpeed2Power.plantModel.environmentTemperature.port.Q_flow"
+      valueReference="100663426"
+      description="Heat flow rate (positive if flowing from outside into the component)"
+      variability="constant">
+      <Real
+        declaredType="Modelica.SIunits.HeatFlowRate"
+        start="0.0"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 153 -->
+    <ScalarVariable
+      name="irradianceTemperatureWindSpeed2Power.plantModel.environmentTemperature.T"
+      valueReference="436207618">
+      <Real
+        declaredType="Modelica.Blocks.Interfaces.RealInput"
+        unit="K"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 154 -->
+    <ScalarVariable
+      name="irradianceTemperatureWindSpeed2Power.plantModel.windSpeed"
+      valueReference="436207619"
+      description="The wind speed at the plant&#39;s site (optional input)">
+      <Real
+        declaredType="Modelica.Blocks.Interfaces.RealInput"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 155 -->
+    <ScalarVariable
+      name="irradianceTemperatureWindSpeed2Power.plantModel.max.u1"
+      valueReference="905969795"
+      description="Connector of Real input signal 1">
+      <Real
+        declaredType="Modelica.Blocks.Interfaces.RealInput"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 156 -->
+    <ScalarVariable
+      name="irradianceTemperatureWindSpeed2Power.plantModel.max.u2"
+      valueReference="234881048"
+      description="Connector of Real input signal 2"
+      variability="tunable">
+      <Real
+        declaredType="Modelica.Blocks.Interfaces.RealInput"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 157 -->
+    <ScalarVariable
+      name="irradianceTemperatureWindSpeed2Power.plantModel.max.y"
+      valueReference="369098790"
+      description="Connector of Real output signal">
+      <Real
+        declaredType="Modelica.Blocks.Interfaces.RealOutput"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 158 -->
+    <ScalarVariable
+      name="irradianceTemperatureWindSpeed2Power.plantModel.max1.u1"
+      valueReference="234881048"
+      description="Connector of Real input signal 1"
+      variability="tunable">
+      <Real
+        declaredType="Modelica.Blocks.Interfaces.RealInput"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 159 -->
+    <ScalarVariable
+      name="irradianceTemperatureWindSpeed2Power.plantModel.max1.u2"
+      valueReference="905969796"
+      description="Connector of Real input signal 2">
+      <Real
+        declaredType="Modelica.Blocks.Interfaces.RealInput"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 160 -->
+    <ScalarVariable
+      name="irradianceTemperatureWindSpeed2Power.plantModel.max1.y"
+      valueReference="369098793"
+      description="Connector of Real output signal">
+      <Real
+        declaredType="Modelica.Blocks.Interfaces.RealOutput"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 161 -->
+    <ScalarVariable
+      name="irradianceTemperatureWindSpeed2Power.plantModel.const.k"
+      valueReference="16777240"
+      description="Constant output value"
+      causality="parameter"
+      variability="tunable">
+      <Real start="0"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 162 -->
+    <ScalarVariable
+      name="irradianceTemperatureWindSpeed2Power.plantModel.const.y"
+      valueReference="234881048"
+      description="Connector of Real output signal"
+      variability="tunable">
+      <Real
+        declaredType="Modelica.Blocks.Interfaces.RealOutput"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 163 -->
+    <ScalarVariable
+      name="irradianceTemperatureWindSpeed2Power.plantModel.add.u1"
+      valueReference="369098885"
+      description="Connector of Real input signal 1">
+      <Real
+        declaredType="Modelica.Blocks.Interfaces.RealInput"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 164 -->
+    <ScalarVariable
+      name="irradianceTemperatureWindSpeed2Power.plantModel.add.u2"
+      valueReference="234881051"
+      description="Connector of Real input signal 2"
+      variability="tunable">
+      <Real
+        declaredType="Modelica.Blocks.Interfaces.RealInput"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 165 -->
+    <ScalarVariable
+      name="irradianceTemperatureWindSpeed2Power.plantModel.add.y"
+      valueReference="369098886"
+      description="Connector of Real output signal">
+      <Real
+        declaredType="Modelica.Blocks.Interfaces.RealOutput"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 166 -->
+    <ScalarVariable
+      name="irradianceTemperatureWindSpeed2Power.plantModel.add.k1"
+      valueReference="16777241"
+      description="Gain of input signal 1"
+      causality="parameter"
+      variability="tunable">
+      <Real start="-1"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 167 -->
+    <ScalarVariable
+      name="irradianceTemperatureWindSpeed2Power.plantModel.add.k2"
+      valueReference="16777242"
+      description="Gain of input signal 2"
+      causality="parameter"
+      variability="tunable">
+      <Real start="1"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 168 -->
+    <ScalarVariable
+      name="irradianceTemperatureWindSpeed2Power.plantModel.transformFactor.k"
+      valueReference="16777243"
+      description="Constant output value"
+      causality="parameter"
+      variability="tunable">
+      <Real start="90"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 169 -->
+    <ScalarVariable
+      name="irradianceTemperatureWindSpeed2Power.plantModel.transformFactor.y"
+      valueReference="234881051"
+      description="Connector of Real output signal"
+      variability="tunable">
+      <Real
+        declaredType="Modelica.Blocks.Interfaces.RealOutput"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 170 -->
+    <ScalarVariable
+      name="irradianceTemperatureWindSpeed2Power.plantModel.angleOfSunAboveHorizon"
+      valueReference="335544322"
+      description="Angle of Sun above horizon">
+      <Real
+        declaredType="Modelica.Blocks.Interfaces.RealOutput"
+        unit="deg"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 171 -->
+    <ScalarVariable
+      name="irradianceTemperatureWindSpeed2Power.plantModel.angleOfIncidence"
+      valueReference="369098891"
+      description="The angle of incidence between surface normal and sun beam">
+      <Real
+        declaredType="Modelica.Blocks.Interfaces.RealOutput"
+        unit="rad"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 172 -->
+    <ScalarVariable
+      name="irradianceTemperatureWindSpeed2Power.plantModel.inverterEfficiency.k"
+      valueReference="100663431"
+      description="Gain value multiplied with input signal"
+      variability="tunable">
+      <Real
+        unit="1"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 173 -->
+    <ScalarVariable
+      name="irradianceTemperatureWindSpeed2Power.plantModel.inverterEfficiency.u"
+      valueReference="369098888"
+      description="Input signal connector">
+      <Real
+        declaredType="Modelica.Blocks.Interfaces.RealInput"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 174 -->
+    <ScalarVariable
+      name="irradianceTemperatureWindSpeed2Power.plantModel.inverterEfficiency.y"
+      valueReference="369098867"
+      description="Output signal connector">
+      <Real
+        declaredType="Modelica.Blocks.Interfaces.RealOutput"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 175 -->
+    <ScalarVariable
+      name="irradianceTemperatureWindSpeed2Power.plantModel.k"
+      valueReference="100663433"
+      description="Constant overall efficiency of the DC-AC converter"
+      variability="tunable">
+      <Real
+        declaredType="Modelica.SIunits.Efficiency"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 176 -->
+    <ScalarVariable
+      name="irradianceTemperatureWindSpeed2Power.directIrradiance"
+      valueReference="436207617"
+      description="Direct irradiance">
+      <Real
+        declaredType="Modelica.Blocks.Interfaces.RealInput"
+        unit="W/m2"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 177 -->
+    <ScalarVariable
+      name="irradianceTemperatureWindSpeed2Power.diffuseIrradiance"
+      valueReference="436207616"
+      description="Diffuse irradiance ">
+      <Real
+        declaredType="Modelica.Blocks.Interfaces.RealInput"
+        unit="W/m2"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 178 -->
+    <ScalarVariable
+      name="irradianceTemperatureWindSpeed2Power.temperature"
+      valueReference="436207618"
+      description="The temperature at the plant&#39;s site">
+      <Real
+        declaredType="Modelica.Blocks.Interfaces.RealInput"
+        unit="K"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 179 -->
+    <ScalarVariable
+      name="irradianceTemperatureWindSpeed2Power.windSpeed"
+      valueReference="905969758"
+      description="The wind speed at the plant&#39;s site">
+      <Real
+        declaredType="Modelica.Blocks.Interfaces.RealInput"
+        unit="m/s"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 180 -->
+    <ScalarVariable
+      name="irradianceTemperatureWindSpeed2Power.power"
+      valueReference="335544320"
+      description="The generated power">
+      <Real
+        declaredType="Modelica.Blocks.Interfaces.RealOutput"
+        unit="W"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 181 -->
+    <ScalarVariable
+      name="irradianceTemperatureWindSpeed2Power.angleOfSunAboveHorizon"
+      valueReference="335544322"
+      description="Angle of Sun above horizon">
+      <Real
+        declaredType="Modelica.Blocks.Interfaces.RealOutput"
+        unit="deg"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 182 -->
+    <ScalarVariable
+      name="irradianceTemperatureWindSpeed2Power.angleOfIncidence"
+      valueReference="369098891"
+      description="The angle of incidence between surface normal and sun beam">
+      <Real
+        declaredType="Modelica.Blocks.Interfaces.RealOutput"
+        unit="rad"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 183 -->
+    <ScalarVariable
+      name="to_deg1.u"
+      valueReference="369098892"
+      description="Connector of Real input signal to be converted">
+      <Real
+        declaredType="Modelica.Blocks.Interfaces.RealInput"
+        unit="rad"/>
+    </ScalarVariable>
+    <!-- Index for next variable = 184 -->
+    <ScalarVariable
+      name="to_deg1.y"
+      valueReference="335544323"
+      description="Connector of Real output signal containing input signal u in another unit">
+      <Real
+        declaredType="Modelica.Blocks.Interfaces.RealOutput"
+        unit="deg"/>
+    </ScalarVariable>
+  </ModelVariables>
+  <ModelStructure>
+    <Outputs>
+      <Unknown index="7"
+        dependencies="3 4 5 6"
+        dependenciesKind="dependent dependent fixed dependent"/>
+      <Unknown index="8"
+        dependencies="137"
+        dependenciesKind="fixed"/>
+      <Unknown index="9"
+        dependencies=""
+        dependenciesKind=""/>
+      <Unknown index="10"
+        dependencies=""
+        dependenciesKind=""/>
+    </Outputs>
+    <Derivatives>
+      <Unknown index="138"
+        dependencies="3 4 5 6"
+        dependenciesKind="dependent dependent fixed dependent"/>
+    </Derivatives>
+    <InitialUnknowns>
+      <Unknown index="7"
+        dependencies="1 2 3 4 5 6 12 42 66 67 94 95 96 110 111 112 114 115 116 125 126 127 161"
+        dependenciesKind="dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent"/>
+      <Unknown index="8"
+        dependencies="135"
+        dependenciesKind="dependent"/>
+      <Unknown index="9"
+        dependencies="1 2 166 167 168"
+        dependenciesKind="dependent dependent dependent dependent dependent"/>
+      <Unknown index="10"
+        dependencies="1 2"
+        dependenciesKind="dependent dependent"/>
+      <Unknown index="137"
+        dependencies="135"
+        dependenciesKind="dependent"/>
+      <Unknown index="138"
+        dependencies="1 2 3 4 5 6 12 42 66 67 94 95 96 110 111 112 114 115 116 125 126 127 133 161"
+        dependenciesKind="dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent dependent"/>
+    </InitialUnknowns>
+  </ModelStructure>
+</fmiModelDescription>
