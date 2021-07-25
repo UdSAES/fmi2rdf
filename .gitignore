@@ -1,0 +1,5 @@
+# Ignore specific directories
+local/
+
+# Ignore specific files
+.env
