@@ -1,0 +1,125 @@
+# RML rules (https://rml.io) for parsing `modelDescription.xml` to RDF
+# See https://rml.io/docs/rml/tutorials/xml/ for more information.
+
+@prefix rr: <http://www.w3.org/ns/r2rml#> .
+@prefix rml: <http://semweb.mmlab.be/ns/rml#> .
+@prefix ql: <http://semweb.mmlab.be/ns/ql#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix fmi: <https://ontologies.msaas.me/fmi-ontology.ttl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix : <http://example.org/rules/> .
+
+# What data to use?
+:TriplesMap a rr:TriplesMap;
+  rml:logicalSource [
+    rml:source "tests/data/modelDescription.xml";
+    rml:referenceFormulation ql:XPath;
+    rml:iterator "/fmiModelDescription"
+  ].
+
+# How to generate subjects?
+:TriplesMap rr:subjectMap [
+  rr:template "http://example.org/FMUs/{@modelName}"
+].
+
+# How to generate predicates and objects?
+:TriplesMap rr:predicateObjectMap [
+  rr:predicate rdf:type;
+  rr:objectMap [ rr:constant fmi:FMU ];
+].
+
+:TriplesMap rr:predicateObjectMap [
+  rr:predicate fmi:fmiVersion;
+  rr:objectMap [
+    rml:reference "@fmiVersion";
+    rr:datatype xsd:normalizedString
+  ];
+].
+
+:TriplesMap rr:predicateObjectMap [
+  rr:predicate fmi:modelName;
+  rr:objectMap [
+    rml:reference "@modelName";
+    rr:datatype xsd:normalizedString
+  ];
+].
+
+:TriplesMap rr:predicateObjectMap [
+  rr:predicate fmi:guid;
+  rr:objectMap [
+    rml:reference "@guid";
+    rr:datatype xsd:normalizedString
+  ];
+].
+
+:TriplesMap rr:predicateObjectMap [
+  rr:predicate fmi:description;
+  rr:objectMap [
+    rml:reference "@description";
+    rr:datatype xsd:string
+  ];
+].
+
+:TriplesMap rr:predicateObjectMap [
+  rr:predicate fmi:author;
+  rr:objectMap [
+    rml:reference "@author";
+    rr:datatype xsd:string
+  ];
+].
+
+:TriplesMap rr:predicateObjectMap [
+  rr:predicate fmi:version;
+  rr:objectMap [
+    rml:reference "@version";
+    rr:datatype xsd:normalizedString
+  ];
+].
+
+:TriplesMap rr:predicateObjectMap [
+  rr:predicate fmi:copyright;
+  rr:objectMap [
+    rml:reference "@copyright";
+    rr:datatype xsd:string
+  ];
+].
+
+:TriplesMap rr:predicateObjectMap [
+  rr:predicate fmi:license;
+  rr:objectMap [
+    rml:reference "@license";
+    rr:datatype xsd:string
+  ];
+].
+
+:TriplesMap rr:predicateObjectMap [
+  rr:predicate fmi:generationTool;
+  rr:objectMap [
+    rml:reference "@generationTool";
+    rr:datatype xsd:normalizedString
+  ];
+].
+
+:TriplesMap rr:predicateObjectMap [
+  rr:predicate fmi:generationDateAndTime;
+  rr:objectMap [
+    rml:reference "@generationDateAndTime";
+    rr:datatype xsd:dateTime
+  ];
+].
+
+:TriplesMap rr:predicateObjectMap [
+  rr:predicate fmi:numberOfEventIndicators;
+  rr:objectMap [
+    rml:reference "@numberOfEventIndicators";
+    rr:datatype xsd:unsignedInt
+  ];
+].
+
+:TriplesMap rr:predicateObjectMap [
+  rr:predicate fmi:variableNamingConvention;
+  rr:objectMap [
+    rml:reference "@variableNamingConvention";
+    rr:datatype xsd:normalizedString
+  ];
+].
