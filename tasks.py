@@ -17,15 +17,20 @@ from loguru import logger
     },
     optional=["serialization", "output"],
 )
-def rml_modeldescription_xml(ctx, rules, serialization="nquads", output=None):
-    """Apply RML rules to `modelDescription.xml`; generate output."""
+def apply_rml(ctx, rules, serialization="nquads", output=None):
+    """
+    Apply RML rules; generate output.
+
+    The target file on which the rules are applied is defined in the rules!
+    """
+    logger.debug(f"Applying RML mappings defined in '{os.path.basename(rules)}'...")
 
     mapping = os.path.basename(rules)
     workdir = os.path.dirname(rules)
 
     prefix = (
-        "docker run -i --rm --name rmlmapper "
-        f"-v {workdir}:/data "
+        "podman run -i --rm --name rmlmapper "
+        f"-v {workdir}:/data:Z "
         "rmlio/rmlmapper-java:latest "
     )
 
@@ -35,5 +40,11 @@ def rml_modeldescription_xml(ctx, rules, serialization="nquads", output=None):
 
     cmd = prefix + cmd_container
 
-    logger.debug(cmd)
-    ctx.run(cmd)
+    logger.trace(cmd)
+    result = ctx.run(cmd, hide="out")
+
+    if result.ok:
+        logger.debug(f"\n{result.stdout}")
+        return result.stdout
+    else:
+        logger.warning(result)
