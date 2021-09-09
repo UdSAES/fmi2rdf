@@ -46,6 +46,8 @@ def apply_rml(ctx, rules, serialization="nquads", output=None):
         "rmlio/rmlmapper-java:latest "
     )
 
+    # TODO provenance info? https://github.com/RMLio/rmlmapper-java#generating-metadata
+
     cmd_container = f"java rmlmapper.jar -m {mapping} -s {serialization}"
     if output != None:
         cmd_container += f" -o {output}"
@@ -85,8 +87,10 @@ def assemble_graph(ctx, fmu_path, blackbox=False):
 
     graph.bind("dct", DCT, override=True, replace=True)
     graph.bind("qudt", QUDT, override=True, replace=True)
+    # graph.bind("unit", UNIT, override=True, replace=True)
 
     graph.bind("fmi", FMI, override=True, replace=True)
+    # graph.bind("sms", SMS, override=True, replace=True)
 
     # Parse basic metadata about FMU to RDF
     iri_prefix = os.getenv("FMI2RDF_IRI_PREFIX", "http://example.org/FMUs")
@@ -99,6 +103,12 @@ def assemble_graph(ctx, fmu_path, blackbox=False):
         (FMI.fmiVersion, md.fmiVersion, XSD.normalizedString),
         (FMI.modelName, md.modelName, XSD.string),
         (FMI.guid, md.guid.strip("{}"), XSD.normalizedString),
+        # XXX the following attributes are not supported by FMPy! -> investigate
+        # (DCT.description, md.description, XSD.string),
+        # (DCT.creator, md.author, XSD.string),
+        # (FMI.version, md.version, XSD.normalizedString),
+        # (DCT.rights, md.copyright, XSD.string),
+        # (DCT.license, md.license, XSD.string),  # TODO SPDX instead of some literal?
         (FMI.generationTool, md.generationTool, XSD.normalizedString),
         (FMI.generationDateAndTime, md.generationDateAndTime, XSD.dateTime),
         (
@@ -124,6 +134,10 @@ def assemble_graph(ctx, fmu_path, blackbox=False):
         units_map[unit.name] = unit_uriref
         graph.add((unit_uriref, RDF.type, FMI.Unit))
 
+        # TODO map to QUDT/UNIT, possibly via https://ucum.org/ucum.html?
+        # TODO resolve base unit to ground definition in case it's not in UNIT?
+        # TODO ...
+
     logger.debug(json.dumps(units_map, indent=2))
 
     # Identify and parse types defined within the FMU
@@ -139,6 +153,8 @@ def assemble_graph(ctx, fmu_path, blackbox=False):
         graph.add((type_uriref, RDF.type, FMI.SimpleType))
 
         graph = add_variable_constraints(graph, units_map, type_uriref, type)
+
+        # TODO ...
 
     logger.debug(json.dumps(types_map, indent=2))
 
@@ -173,6 +189,8 @@ def assemble_graph(ctx, fmu_path, blackbox=False):
 
             graph.add((var_uriref, RDF.type, FMI.ScalarVariable))
 
+            # if var.name != None:
+            #     graph.add((var_uriref, DCT.title, rdflib.Literal(var.name)))
             if var.description != None:
                 graph.add(
                     (var_uriref, DCT.description, rdflib.Literal(var.description))
@@ -196,10 +214,16 @@ def assemble_graph(ctx, fmu_path, blackbox=False):
                     )
                     continue
 
+    # TODO Attempt to learn sth. about the internal model structure
+    if (md.variableNamingConvention == "structured") and (blackbox == False):
+        pass
+
     # Serialize graph and write to disk
     output = "local/output.ttl"
     logger.info(f"Serializing graph to disk as `./{output}`...")
     graph.serialize(destination=output, format="ttl")
+
+    return graph
 
 
 def add_variable_constraints(graph, units_map, uriref, object):
@@ -216,5 +240,7 @@ def add_variable_constraints(graph, units_map, uriref, object):
         # graph.add((uriref, QUDT.maxInclusive, rdflib.Literal(object.max)))
     if object.nominal != None:
         graph.add((uriref, FMI.nominal, rdflib.Literal(object.nominal)))
+
+    # TODO ...?
 
     return graph
