@@ -85,6 +85,8 @@ def assemble_graph(ctx, fmu_path, blackbox=False):
     # Create empty graph and define prefixes to be used
     graph = rdflib.Graph()
 
+    graph.bind("rdf", RDF, override=True, replace=True)
+
     graph.bind("dct", DCT, override=True, replace=True)
     graph.bind("qudt", QUDT, override=True, replace=True)
     # graph.bind("unit", UNIT, override=True, replace=True)
