@@ -14,6 +14,7 @@ rdflib = "*"
 requests = "*"
 loguru = "*"
 fmpy = "*"
+pyyaml = "*"
 
 [requires]
 python_version = "3.9"
