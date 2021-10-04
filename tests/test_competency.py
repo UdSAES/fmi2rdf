@@ -20,14 +20,9 @@ class TestCompetency(object):
         a0 = graph.query(testcase["query"])
 
         # Construct list of expected literal values
-        results = []
+        actual = []
         for row in a0:
-            for item in row:
-                results.append(item.n3().strip("<>"))
+            actual.append([item.n3().strip("<>") for item in row])
 
         # Verify that each expected result is in the list of actual results
-        if results == []:
-            assert False
-        else:
-            for expected in testcase["expected"]:
-                assert expected in results
+        assert [x in actual for x in testcase["expected"]] if actual != [] else False
