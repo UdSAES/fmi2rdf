@@ -2,3 +2,15 @@
 
 ---
 testcases:
+  - question: "Which quantities need to be supplied to the FMU as inputs?"
+    guid: "6157f34f-f629-484b-b873-f31be22269e1"
+    query: |2
+      SELECT ?variable
+      WHERE {
+        ?variable rdf:type fmi:Input.
+      }
+    expected:
+      - "http://example.org/FMUs/6157f34f-f629-484b-b873-f31be22269e1/variables#diffuseHorizontalIrradiance"
+      - "http://example.org/FMUs/6157f34f-f629-484b-b873-f31be22269e1/variables#directHorizontalIrradiance"
+      - "http://example.org/FMUs/6157f34f-f629-484b-b873-f31be22269e1/variables#temperature"
+      - "http://example.org/FMUs/6157f34f-f629-484b-b873-f31be22269e1/variables#windSpeed"
