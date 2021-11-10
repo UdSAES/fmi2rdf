@@ -27,3 +27,30 @@ exclude = '''
 
 [tool.isort]
 profile = "black"
+
+[tool.poetry]
+name = "fmi2rdf"
+version = "0.1.0"
+description = "Extract triples about Functional Mock-up Units (FMUs) in Resource Description Framework (RDF)"
+authors = ["Moritz Stüber <moritz.stueber@aut.uni-saarland.de>"]
+license = "MIT"
+readme = "README.adoc"
+keywords = ["FMI", "FMU", "RDF"]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+invoke = "^1.6.0"
+rdflib = "^6.0.2"
+requests = "^2.26.0"
+loguru = "^0.5.3"
+FMPy = "^0.3.2"
+PyYAML = "^6.0"
+
+[tool.poetry.dev-dependencies]
+black = {version = "^21.10b0", allow-prereleases = true}
+isort = "^5.10.1"
+pytest = "^6.2.5"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
