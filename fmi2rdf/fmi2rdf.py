@@ -213,11 +213,6 @@ def assemble_graph(ctx, fmu_path, blackbox=False, records=None):
     if (md.variableNamingConvention == "structured") and (blackbox == False):
         pass
 
-    # Serialize graph and write to disk
-    output = "local/output.ttl"
-    logger.info(f"Serializing graph to disk as `./{output}`...")
-    graph.serialize(destination=output, format="ttl")
-
     return graph
 
 
