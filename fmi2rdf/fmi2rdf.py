@@ -53,7 +53,7 @@ def cast_to_type(var, type=None):
     help={
         "fmu_path": "The full path to the FMU to be parsed",
         "blackbox": "Whether or not to include variables that are neither input nor output",
-        "records": "A list of component names inside an FMU used to identify top-level parameters"
+        "records": "A list of component names inside an FMU used to identify top-level parameters",
     },
     optional=["blackbox", "records"],
 )
@@ -195,9 +195,7 @@ def assemble_graph(ctx, fmu_path, blackbox=False, records=None):
 
                     # Create shape for model instantiation
                     shapes_parameter_iri = f"{fmu_iri}#shapes-{var.name}"
-                    shapes_parameter_uriref = rdflib.URIRef(
-                        shapes_parameter_iri
-                    )
+                    shapes_parameter_uriref = rdflib.URIRef(shapes_parameter_iri)
 
                     graph.add((shapes_parameter_uriref, RDF.type, SH.NodeShape))
                     value_for = rdflib.BNode()
@@ -235,23 +233,17 @@ def assemble_graph(ctx, fmu_path, blackbox=False, records=None):
                             (
                                 value,
                                 SH.default,
-                                rdflib.Literal(
-                                    cast_to_type(var.nominal, var.type)
-                                ),
+                                rdflib.Literal(cast_to_type(var.nominal, var.type)),
                             )
                         )
 
                     blank_node = rdflib.BNode()
-                    graph.add(
-                        (blank_node, SH.path, rdflib.URIRef(f"#{var.name}"))
-                    )
+                    graph.add((blank_node, SH.path, rdflib.URIRef(f"#{var.name}")))
                     graph.add((blank_node, SH.minCount, rdflib.Literal(1)))
                     graph.add((blank_node, SH.maxCount, rdflib.Literal(1)))
                     graph.add((blank_node, SH.node, shapes_parameter_uriref))
 
-                    graph.add(
-                        (shapes_instantiation_uriref, SH.property, blank_node)
-                    )
+                    graph.add((shapes_instantiation_uriref, SH.property, blank_node))
 
                     parameter_exposed = False
                 else:
