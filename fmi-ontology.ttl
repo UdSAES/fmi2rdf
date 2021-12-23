@@ -1,4 +1,5 @@
 @prefix : <https://ontologies.msaas.me/fmi-ontology.ttl#> .
+@prefix fmi: <https://ontologies.msaas.me/fmi-ontology.ttl#> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix sms: <https://ontologies.msaas.me/sms-ontology.ttl#> .
@@ -14,87 +15,109 @@
 #################################################################
 
 ###  https://ontologies.msaas.me/fmi-ontology.ttl#copyright
-:copyright rdf:type owl:DatatypeProperty ;
-           rdfs:domain :FMU ;
-           rdfs:range xsd:string ;
-           rdfs:comment "Optional string with the name and organization of the model author."@en .
+fmi:copyright rdf:type owl:DatatypeProperty ;
+              rdfs:domain fmi:FMU ;
+              rdfs:range xsd:string ;
+              rdfs:comment "Optional string with the name and organization of the model author."@en .
 
 
 ###  https://ontologies.msaas.me/fmi-ontology.ttl#description
-:description rdf:type owl:DatatypeProperty ;
-             rdfs:domain :FMU ;
-             rdfs:range xsd:string ;
-             rdfs:comment "Optional string with a brief description of the model."@en .
+fmi:description rdf:type owl:DatatypeProperty ;
+                rdfs:domain fmi:FMU ;
+                rdfs:range xsd:string ;
+                rdfs:comment "Optional string with a brief description of the model."@en .
 
 
 ###  https://ontologies.msaas.me/fmi-ontology.ttl#fmiVersion
-:fmiVersion rdf:type owl:DatatypeProperty ,
-                     owl:FunctionalProperty ;
-            rdfs:domain :FMU ;
-            rdfs:range xsd:normalizedString ;
-            rdfs:comment "Version of “FMI for Model Exchange or Co-Simulation” that was used to generate the XML file."@en .
+fmi:fmiVersion rdf:type owl:DatatypeProperty ,
+                        owl:FunctionalProperty ;
+               rdfs:domain fmi:FMU ;
+               rdfs:range xsd:normalizedString ;
+               rdfs:comment "Version of “FMI for Model Exchange or Co-Simulation” that was used to generate the XML file."@en .
 
 
 ###  https://ontologies.msaas.me/fmi-ontology.ttl#generationDateAndTime
-:generationDateAndTime rdf:type owl:DatatypeProperty ,
-                                owl:FunctionalProperty ;
-                       rdfs:domain :FMU ;
-                       rdfs:range xsd:dateTime ;
-                       rdfs:comment "Optional date and time when the XML file was generated."@en ,
-                                    "The format is a subset of “xs:dateTime” and should be: “YYYY-MM-DDThh:mm:ssZ” (with one “T” between date and time; “Z” characterizes the Zulu time zone, in other words Greenwich meantime)."@en .
+fmi:generationDateAndTime rdf:type owl:DatatypeProperty ,
+                                   owl:FunctionalProperty ;
+                          rdfs:domain fmi:FMU ;
+                          rdfs:range xsd:dateTime ;
+                          rdfs:comment "Optional date and time when the XML file was generated."@en ,
+                                       "The format is a subset of “xs:dateTime” and should be: “YYYY-MM-DDThh:mm:ssZ” (with one “T” between date and time; “Z” characterizes the Zulu time zone, in other words Greenwich meantime)."@en .
 
 
 ###  https://ontologies.msaas.me/fmi-ontology.ttl#generationTool
-:generationTool rdf:type owl:DatatypeProperty ;
-                rdfs:domain :FMU ;
-                rdfs:range xsd:normalizedString ;
-                rdfs:comment "Optional name of the tool that generated the XML file."@en .
+fmi:generationTool rdf:type owl:DatatypeProperty ;
+                   rdfs:domain fmi:FMU ;
+                   rdfs:range xsd:normalizedString ;
+                   rdfs:comment "Optional name of the tool that generated the XML file."@en .
 
 
 ###  https://ontologies.msaas.me/fmi-ontology.ttl#guid
-:guid rdf:type owl:DatatypeProperty ,
-               owl:FunctionalProperty ;
-      rdfs:domain :FMU ;
-      rdfs:range xsd:normalizedString ;
-      rdfs:comment "The “Globally Unique IDentifier” is a string that is used to check that the XML file is compatible with the C functions of the FMU."@en .
+fmi:guid rdf:type owl:DatatypeProperty ,
+                  owl:FunctionalProperty ;
+         rdfs:domain fmi:FMU ;
+         rdfs:range xsd:normalizedString ;
+         rdfs:comment "The “Globally Unique IDentifier” is a string that is used to check that the XML file is compatible with the C functions of the FMU."@en .
 
 
 ###  https://ontologies.msaas.me/fmi-ontology.ttl#license
-:license rdf:type owl:DatatypeProperty ;
-         rdfs:domain :FMU ;
-         rdfs:range xsd:string ;
-         rdfs:comment "Optional information on the intellectual property licensing for this FMU."@en .
+fmi:license rdf:type owl:DatatypeProperty ;
+            rdfs:domain fmi:FMU ;
+            rdfs:range xsd:string ;
+            rdfs:comment "Optional information on the intellectual property licensing for this FMU."@en .
+
+
+###  https://ontologies.msaas.me/fmi-ontology.ttl#max
+fmi:max rdf:type owl:DatatypeProperty ;
+        rdfs:domain fmi:ScalarVariable ;
+        rdfs:comment "Maximum value of variable (variableValue ≤ max ). If not defined, the maximum is the largest positive number that can be represented on the machine."@en .
+
+
+###  https://ontologies.msaas.me/fmi-ontology.ttl#min
+fmi:min rdf:type owl:DatatypeProperty ;
+        rdfs:domain fmi:ScalarVariable ;
+        rdfs:comment "Minimum value of variable (variable Value ≥ min). If not defined, the minimum is the largest negative number that can be represented on the machine."@en .
 
 
 ###  https://ontologies.msaas.me/fmi-ontology.ttl#modelName
-:modelName rdf:type owl:DatatypeProperty ;
-           rdfs:domain :FMU ;
-           rdfs:range xsd:string ;
-           rdfs:comment "The name of the model as used in the modeling environment that generated the XML file, such as “Modelica.Mechanics.Rotational.Examples.CoupledClutches”."@en .
+fmi:modelName rdf:type owl:DatatypeProperty ;
+              rdfs:domain fmi:FMU ;
+              rdfs:range xsd:string ;
+              rdfs:comment "The name of the model as used in the modeling environment that generated the XML file, such as “Modelica.Mechanics.Rotational.Examples.CoupledClutches”."@en .
+
+
+###  https://ontologies.msaas.me/fmi-ontology.ttl#nominal
+fmi:nominal rdf:type owl:DatatypeProperty ;
+            rdfs:domain fmi:ScalarVariable .
 
 
 ###  https://ontologies.msaas.me/fmi-ontology.ttl#numberOfEventIndicators
-:numberOfEventIndicators rdf:type owl:DatatypeProperty ;
-                         rdfs:domain :FMU ;
-                         rdfs:range xsd:unsignedInt ;
-                         rdfs:comment "The (fixed) number of event indicators for an FMU based on FMI for Model Exchange. For Co-Simulation, this value is ignored."@en .
+fmi:numberOfEventIndicators rdf:type owl:DatatypeProperty ;
+                            rdfs:domain fmi:FMU ;
+                            rdfs:range xsd:unsignedInt ;
+                            rdfs:comment "The (fixed) number of event indicators for an FMU based on FMI for Model Exchange. For Co-Simulation, this value is ignored."@en .
+
+
+###  https://ontologies.msaas.me/fmi-ontology.ttl#start
+fmi:start rdf:type owl:DatatypeProperty ;
+          rdfs:comment "Initial or guess value of variable. This value is also stored in the C functions."@en .
 
 
 ###  https://ontologies.msaas.me/fmi-ontology.ttl#variableNamingConvention
-:variableNamingConvention rdf:type owl:DatatypeProperty ,
-                                   owl:FunctionalProperty ;
-                          rdfs:domain :FMU ;
-                          rdfs:range xsd:normalizedString ;
-                          rdfs:comment "Currently standardized are: * “flat”: A list of strings (the default). * “structured“: Hierarchical names with “.” as hierarchy separator, and with array elements and derivative characterization."@en ,
-                                       "Defines whether the variable names in “ModelVariables / ScalarVariable / name ” and in “TypeDefinitions / Type / name” follow a particular convention."@en .
+fmi:variableNamingConvention rdf:type owl:DatatypeProperty ,
+                                      owl:FunctionalProperty ;
+                             rdfs:domain fmi:FMU ;
+                             rdfs:range xsd:normalizedString ;
+                             rdfs:comment "Currently standardized are: * “flat”: A list of strings (the default). * “structured“: Hierarchical names with “.” as hierarchy separator, and with array elements and derivative characterization."@en ,
+                                          "Defines whether the variable names in “ModelVariables / ScalarVariable / name ” and in “TypeDefinitions / Type / name” follow a particular convention."@en .
 
 
 ###  https://ontologies.msaas.me/fmi-ontology.ttl#version
-:version rdf:type owl:DatatypeProperty ,
-                  owl:FunctionalProperty ;
-         rdfs:domain :FMU ;
-         rdfs:range xsd:normalizedString ;
-         rdfs:comment "Optional version of the model, for example “1.0”."@en .
+fmi:version rdf:type owl:DatatypeProperty ,
+                     owl:FunctionalProperty ;
+            rdfs:domain fmi:FMU ;
+            rdfs:range xsd:normalizedString ;
+            rdfs:comment "Optional version of the model, for example “1.0”."@en .
 
 
 #################################################################
@@ -102,8 +125,8 @@
 #################################################################
 
 ###  https://ontologies.msaas.me/fmi-ontology.ttl#FMU
-:FMU rdf:type owl:Class ;
-     rdfs:comment "An executable implementation of the Functional Mock-up Interface (FMI): a Functional Mock-up Unit (FMU)."@en .
+fmi:FMU rdf:type owl:Class ;
+        rdfs:comment "An executable implementation of the Functional Mock-up Interface (FMI): a Functional Mock-up Unit (FMU)."@en .
 
 
 ###  Generated by the OWL API (version 4.5.9.2019-02-01T07:24:44Z) https://github.com/owlcs/owlapi
