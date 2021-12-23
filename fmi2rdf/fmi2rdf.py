@@ -52,11 +52,12 @@ def cast_to_type(var, type=None):
 @task(
     help={
         "fmu_path": "The full path to the FMU to be parsed",
-        "blackbox": "Whether or not to include variables that are neither input nor ouptut",
+        "blackbox": "Whether or not to include variables that are neither input nor output",
+        "records": "A list of component names inside an FMU used to identify top-level parameters"
     },
-    optional=["blackbox"],
+    optional=["blackbox", "records"],
 )
-def assemble_graph(ctx, fmu_path, blackbox=False):
+def assemble_graph(ctx, fmu_path, blackbox=False, records=None):
     """Collect information about a FMU as a RDF graph."""
 
     logger.info(f"Parsing FMU {os.path.basename(fmu_path)}...")
