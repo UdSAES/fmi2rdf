@@ -147,6 +147,13 @@ def assemble_graph(ctx, fmu_path, blackbox=False, records=None):
 
     logger.debug(json.dumps(types_map, indent=2))
 
+    # Prepare creation of shapes for model instantiation
+    shapes_instantiation_iri = f"{fmu_iri}#shapes-instantiation"
+    shapes_instantiation_uriref = rdflib.URIRef(shapes_instantiation_iri)
+
+    graph.add((shapes_instantiation_uriref, RDF.type, SH.NodeShape))
+    graph.add((shapes_instantiation_uriref, SH.targetNode, rdflib.BNode()))
+
     # Identify and parse variables defined within the FMU
     for var in md.modelVariables:
         logger.debug(f"Parsing variable `{var.name}`...")
@@ -155,20 +162,101 @@ def assemble_graph(ctx, fmu_path, blackbox=False, records=None):
         var_uriref = rdflib.URIRef(var_iri)
         logger.trace(var_iri)
 
+        parameter_exposed = False
+
         # Distinguish between parameters, inputs, outputs, and internal variables
-        if var.causality in ["parameter", "calculatedParameter", "input", "output"]:
-            if var.causality == "parameter" or var.causality == "calculatedParameter":
-                if blackbox == True:
+        if var.causality in [
+            "parameter",
+            "calculatedParameter",
+            "local",
+            "input",
+            "output",
+        ]:
+            if (
+                var.causality == "parameter"
+                or var.causality == "calculatedParameter"
+                or var.causality == "local"
+            ):
+                if records != None:
+                    blackbox = False
+                    for record in records.split(","):
+                        parameter_exposed |= pydash.starts_with(var.name, record)
+                elif blackbox == True:
                     # Only parse top-level parameters
                     # XXX Assumes hierarchical component names!
                     if not ("." in var.name):
-                        graph.add((var_uriref, RDF.type, FMI.Parameter))
-                        graph.add((fmu_uriref, FMI.hasParameter, var_uriref))
-                    else:
-                        continue
+                        parameter_exposed = True
                 else:
+                    parameter_exposed = True
+
+                if parameter_exposed == True:
                     graph.add((var_uriref, RDF.type, FMI.Parameter))
                     graph.add((fmu_uriref, FMI.hasParameter, var_uriref))
+
+                    # Create shape for model instantiation
+                    shapes_parameter_iri = f"{fmu_iri}#shapes-{var.name}"
+                    shapes_parameter_uriref = rdflib.URIRef(
+                        shapes_parameter_iri
+                    )
+
+                    graph.add((shapes_parameter_uriref, RDF.type, SH.NodeShape))
+                    value_for = rdflib.BNode()
+                    value = rdflib.BNode()
+                    unit = rdflib.BNode()
+                    properties = [
+                        (value_for, SH.path, SMS.isValueFor),
+                        (value_for, SH.hasValue, var_uriref),
+                        (value, SH.path, QUDT.value),
+                        (unit, SH.path, QUDT.unit),
+                        # (unit, SH.hasValue, UNIT...)  # TODO
+                    ]
+                    for s, p, o in properties:
+                        graph.add((shapes_parameter_uriref, SH.property, s))
+                        graph.add((s, p, o))
+
+                    if var.min != None:
+                        graph.add(
+                            (
+                                value,
+                                SH.minInclusive,
+                                rdflib.Literal(cast_to_type(var.min, var.type)),
+                            )
+                        )
+                    if var.max != None:
+                        graph.add(
+                            (
+                                value,
+                                SH.maxInclusive,
+                                rdflib.Literal(cast_to_type(var.max, var.type)),
+                            )
+                        )
+                    if var.nominal != None:
+                        graph.add(
+                            (
+                                value,
+                                SH.default,
+                                rdflib.Literal(
+                                    cast_to_type(var.nominal, var.type)
+                                ),
+                            )
+                        )
+
+                    blank_node = rdflib.BNode()
+                    graph.add(
+                        (blank_node, SH.path, rdflib.URIRef(f"#{var.name}"))
+                    )
+                    graph.add((blank_node, SH.minCount, rdflib.Literal(1)))
+                    graph.add((blank_node, SH.maxCount, rdflib.Literal(1)))
+                    graph.add((blank_node, SH.node, shapes_parameter_uriref))
+
+                    graph.add(
+                        (shapes_instantiation_uriref, SH.property, blank_node)
+                    )
+
+                    parameter_exposed = False
+                else:
+                    continue
+
             if var.causality == "input":
                 graph.add((var_uriref, RDF.type, FMI.Input))
                 graph.add((fmu_uriref, FMI.hasInput, var_uriref))
