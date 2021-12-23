@@ -38,16 +38,17 @@ readme = "README.adoc"
 keywords = ["FMI", "FMU", "RDF"]
 
 [tool.poetry.dependencies]
-python = "^3.9"
+python = "^3.10"
 invoke = "^1.6.0"
 rdflib = "^6.0.2"
 requests = "^2.26.0"
 loguru = "^0.5.3"
 FMPy = "^0.3.2"
 PyYAML = "^6.0"
+pydash = "^5.1.0"
 
 [tool.poetry.dev-dependencies]
-black = {version = "^21.10b0", allow-prereleases = true}
+black = {version = "^21.12b0", allow-prereleases = true}
 isort = "^5.10.1"
 pytest = "^6.2.5"
 
