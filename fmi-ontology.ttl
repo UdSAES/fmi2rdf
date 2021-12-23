@@ -170,29 +170,25 @@ fmi:FMU rdf:type owl:Class ;
 
 ###  https://ontologies.msaas.me/fmi-ontology.ttl#Input
 fmi:Input rdf:type owl:Class ;
-          rdfs:subClassOf fmi:ScalarVariable ,
-                          sms:Variable ;
+          rdfs:subClassOf fmi:ScalarVariable ;
           owl:disjointWith fmi:Output ;
           rdfs:comment "An input variable to an FMU"@en .
 
 
 ###  https://ontologies.msaas.me/fmi-ontology.ttl#Output
 fmi:Output rdf:type owl:Class ;
-           rdfs:subClassOf fmi:ScalarVariable ,
-                           sms:Variable ;
+           rdfs:subClassOf fmi:ScalarVariable ;
            rdfs:comment "An output variable that gets calculated within the FMU"@en .
 
 
 ###  https://ontologies.msaas.me/fmi-ontology.ttl#Parameter
 fmi:Parameter rdf:type owl:Class ;
-              rdfs:subClassOf fmi:ScalarVariable ,
-                              sms:ModelParameter ;
+              rdfs:subClassOf fmi:ScalarVariable ;
               rdfs:comment "All scalar variables for which `causality` is `parameter` or `calculatedParameter`."@en .
 
 
 ###  https://ontologies.msaas.me/fmi-ontology.ttl#ScalarVariable
 fmi:ScalarVariable rdf:type owl:Class ;
-                   rdfs:subClassOf sms:Virtual ;
                    rdfs:comment "A “ScalarVariable” represents a variable of primitive type, like a real or integer variable."@en .
 
 
@@ -203,7 +199,6 @@ fmi:SimpleType rdf:type owl:Class ;
 
 ###  https://ontologies.msaas.me/fmi-ontology.ttl#Unit
 fmi:Unit rdf:type owl:Class ;
-         rdfs:subClassOf sms:Virtual ;
          rdfs:comment "Unit of the variable defined within the FMU that is used for the model equations."@en .
 
 
