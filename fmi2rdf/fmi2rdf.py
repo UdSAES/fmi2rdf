@@ -14,11 +14,12 @@ from rdflib.namespace import OWL, RDF, XSD
 
 # Declare namespaces to enable enforcing consistent prefixes
 DCT = rdflib.Namespace("http://purl.org/dc/terms/")
+SH = rdflib.Namespace("http://www.w3.org/ns/shacl#")
 QUDT = rdflib.Namespace("http://qudt.org/schema/qudt/")
 UNIT = rdflib.Namespace("http://qudt.org/vocab/unit/")
-FMI = rdflib.Namespace("https://ontologies.msaas.me/fmi-ontology.ttl#")
-SMS = rdflib.Namespace("https://ontologies.msaas.me/sms-ontology.ttl#")
-ABOX = rdflib.Namespace("https://abox.msaas.me/")
+FMI = rdflib.Namespace("https://purl.org/fmi-ontology#")
+SMS = rdflib.Namespace("https://purl.org/sms-ontology#")
+
 
 
 @task(
@@ -45,11 +46,12 @@ def assemble_graph(ctx, fmu_path, blackbox=False):
     graph.bind("rdf", RDF, override=True, replace=True)
 
     graph.bind("dct", DCT, override=True, replace=True)
+    graph.bind("sh", SH, override=True, replace=True)
     graph.bind("qudt", QUDT, override=True, replace=True)
-    # graph.bind("unit", UNIT, override=True, replace=True)
+    graph.bind("unit", UNIT, override=True, replace=True)
 
     graph.bind("fmi", FMI, override=True, replace=True)
-    # graph.bind("sms", SMS, override=True, replace=True)
+    graph.bind("sms", SMS, override=True, replace=True)
 
     # Parse basic metadata about FMU to RDF
     iri_prefix = os.getenv("FMI2RDF_IRI_PREFIX", "http://example.org/FMUs")
