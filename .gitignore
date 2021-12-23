@@ -1,5 +1,10 @@
 # Ignore specific directories
 local/
+.vscode/
+__pycache__/
+.pytest_cache/
 
 # Ignore specific files
 .env
+output.ttl
+*.code-workspace
