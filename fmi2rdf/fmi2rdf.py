@@ -7,6 +7,7 @@ import json
 import os
 
 import fmpy
+import pydash
 import rdflib
 from invoke import task
 from loguru import logger
@@ -20,6 +21,32 @@ UNIT = rdflib.Namespace("http://qudt.org/vocab/unit/")
 FMI = rdflib.Namespace("https://purl.org/fmi-ontology#")
 SMS = rdflib.Namespace("https://purl.org/sms-ontology#")
 
+
+def cast_to_type(var, type=None):
+    type_map = {
+        "number": "Real",
+        "integer": "Integer",
+        "Enumeration": "Enumeration",
+        "boolean": "Boolean",
+        "string": "String",
+    }
+
+    if type in type_map.keys():
+        type = type_map[type]
+
+    if type == None:
+        return var
+    else:
+        if type == "Real":
+            return float(var)
+        if type == "Integer":
+            return int(var)
+        if type == "Enumeration":
+            raise NotImplementedError("type 'Enumeration' is not yet supported")
+        if type == "Boolean":
+            return bool(var)
+        if type == "String":
+            return str(var)
 
 
 @task(
@@ -157,7 +184,13 @@ def assemble_graph(ctx, fmu_path, blackbox=False):
                     (var_uriref, DCT.description, rdflib.Literal(var.description))
                 )
             if var.start != None:
-                graph.add((var_uriref, FMI.start, rdflib.Literal(var.start)))
+                graph.add(
+                    (
+                        var_uriref,
+                        FMI.start,
+                        rdflib.Literal(cast_to_type(var.start, var.type)),
+                    )
+                )
 
             graph = add_variable_constraints(graph, units_map, var_uriref, var)
 
@@ -194,13 +227,23 @@ def add_variable_constraints(graph, units_map, uriref, object):
         logger.warning(f"Unit `{object.unit}` for object `{object.name}` not found!")
 
     if object.min != None:
-        graph.add((uriref, FMI.min, rdflib.Literal(object.min)))
+        graph.add(
+            (uriref, FMI.min, rdflib.Literal(cast_to_type(object.min, object.type)))
+        )
         # graph.add((uriref, QUDT.minInclusive, rdflib.Literal(object.min)))
     if object.max != None:
-        graph.add((uriref, FMI.max, rdflib.Literal(object.max)))
+        graph.add(
+            (uriref, FMI.max, rdflib.Literal(cast_to_type(object.max, object.type)))
+        )
         # graph.add((uriref, QUDT.maxInclusive, rdflib.Literal(object.max)))
     if object.nominal != None:
-        graph.add((uriref, FMI.nominal, rdflib.Literal(object.nominal)))
+        graph.add(
+            (
+                uriref,
+                FMI.nominal,
+                rdflib.Literal(cast_to_type(object.nominal, object.type)),
+            )
+        )
 
     # TODO ...?
 
