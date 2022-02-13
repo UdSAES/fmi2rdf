@@ -2,7 +2,7 @@
 
 Extracts facts about https://fmi-standard.org[Functional Mock-up Units (FMUs)] and represents them as triples using the https://www.w3.org/TR/rdf11-concepts/[Resource Description Framework (RDF)].
 
-IMPORTANT: Recent improvements to code and README/documentation have not been pushed to GitHub yet -- *will be fixed as soon as possible*, certainly in calender week 7! (2022-02-13)
+IMPORTANT: *Recent improvements to code and README/documentation have not been pushed to GitHub yet -- will be fixed as soon as possible*, certainly in calender week 7! (2022-02-13)
 
 == Installation
 ...
