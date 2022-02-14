@@ -22,33 +22,6 @@ FMI = rdflib.Namespace("https://purl.org/fmi-ontology#")
 SMS = rdflib.Namespace("https://purl.org/sms-ontology#")
 
 
-def cast_to_type(var, type=None):
-    type_map = {
-        "number": "Real",
-        "integer": "Integer",
-        "Enumeration": "Enumeration",
-        "boolean": "Boolean",
-        "string": "String",
-    }
-
-    if type in type_map.keys():
-        type = type_map[type]
-
-    if type == None:
-        return var
-    else:
-        if type == "Real":
-            return float(var)
-        if type == "Integer":
-            return int(var)
-        if type == "Enumeration":
-            raise NotImplementedError("type 'Enumeration' is not yet supported")
-        if type == "Boolean":
-            return bool(var)
-        if type == "String":
-            return str(var)
-
-
 @task(
     help={
         "fmu_path": "The full path to the FMU to be parsed",
@@ -266,6 +239,33 @@ def assemble_graph(ctx, fmu_path, blackbox=False, records=None):
         pass
 
     return graph
+
+
+def cast_to_type(var, type=None):
+    type_map = {
+        "number": "Real",
+        "integer": "Integer",
+        "Enumeration": "Enumeration",
+        "boolean": "Boolean",
+        "string": "String",
+    }
+
+    if type in type_map.keys():
+        type = type_map[type]
+
+    if type == None:
+        return var
+    else:
+        if type == "Real":
+            return float(var)
+        if type == "Integer":
+            return int(var)
+        if type == "Enumeration":
+            raise NotImplementedError("type 'Enumeration' is not yet supported")
+        if type == "Boolean":
+            return bool(var)
+        if type == "String":
+            return str(var)
 
 
 def add_variable_constraints(graph, units_map, uriref, object):
