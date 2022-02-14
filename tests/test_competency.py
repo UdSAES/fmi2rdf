@@ -13,9 +13,11 @@ from fmi2rdf import assemble_graph
 
 
 class TestCompetency(object):
-    def test_sparql_select(self, testcase):
+    def test_sparql_select(self, testcase, monkeypatch):
+        monkeypatch.setenv("FMI2RDF_IRI_PREFIX", "http://example.org/FMUs")
+
         fmu_path = os.path.abspath(f"./tests/data/{testcase['guid']}.fmu")
-        graph = assemble_graph(invoke.context.Context(), fmu_path, False)
+        graph = assemble_graph(fmu_path, False, None)
 
         a0 = graph.query(testcase["query"])
 
@@ -25,4 +27,4 @@ class TestCompetency(object):
             actual.append([item.n3().strip("<>") for item in row])
 
         # Verify that each expected result is in the list of actual results
-        assert [x in actual for x in testcase["expected"]] if actual != [] else False
+        assert testcase["expected"] == actual
