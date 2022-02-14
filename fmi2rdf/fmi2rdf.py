@@ -11,7 +11,7 @@ import pydash
 import rdflib
 from invoke import task
 from loguru import logger
-from rdflib.namespace import OWL, RDF, XSD
+from rdflib.namespace import OWL, RDF, SOSA, XSD
 
 # Declare namespaces to enable enforcing consistent prefixes
 DCT = rdflib.Namespace("http://purl.org/dc/terms/")
@@ -75,6 +75,7 @@ def assemble_graph(ctx, fmu_path, blackbox=False, records=None):
 
     graph.bind("dct", DCT, override=True, replace=True)
     graph.bind("sh", SH, override=True, replace=True)
+    graph.bind("sosa", SOSA, override=True, replace=True)
     graph.bind("qudt", QUDT, override=True, replace=True)
     graph.bind("unit", UNIT, override=True, replace=True)
 
