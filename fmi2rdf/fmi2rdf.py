@@ -155,6 +155,13 @@ def assemble_graph(ctx, fmu_path, blackbox=False, records=None):
     graph.add((shapes_instantiation_uriref, RDF.type, SH.NodeShape))
     graph.add((shapes_instantiation_uriref, SH.targetNode, rdflib.BNode()))
 
+    # Prepare creation of shapes for simulation
+    shapes_simulation_iri = f"{fmu_iri}#shapes-simulation"
+    shapes_simulation_uriref = rdflib.URIRef(shapes_simulation_iri)
+
+    graph.add((shapes_simulation_uriref, RDF.type, SH.NodeShape))
+    graph.add((shapes_simulation_uriref, SH.targetNode, rdflib.BNode()))
+
     # Identify and parse variables defined within the FMU
     for var in md.modelVariables:
         logger.debug(f"Parsing variable `{var.name}`...")
@@ -211,6 +218,12 @@ def assemble_graph(ctx, fmu_path, blackbox=False, records=None):
             if var.causality == "input":
                 graph.add((var_uriref, RDF.type, FMI.Input))
                 graph.add((fmu_uriref, FMI.hasInput, var_uriref))
+
+                # Create shape for input timeseries to be supplied
+                graph = add_variable_shape(
+                    graph, shapes_simulation_uriref, var_uriref, var, fmu_iri, False
+                )
+
             if var.causality == "output":
                 graph.add((var_uriref, RDF.type, FMI.Output))
                 graph.add((fmu_uriref, FMI.hasOutput, var_uriref))
