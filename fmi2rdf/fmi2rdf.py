@@ -9,7 +9,7 @@ import os
 import fmpy
 import pydash
 import rdflib
-from invoke import task
+from invoke import Context, task
 from loguru import logger
 from rdflib.namespace import OWL, RDF, SOSA, XSD
 
@@ -30,7 +30,12 @@ SMS = rdflib.Namespace("https://purl.org/sms-ontology#")
     },
     optional=["blackbox", "records"],
 )
-def assemble_graph(ctx, fmu_path, blackbox=False, records=None):
+def fmi2rdf(ctx, fmu_path, blackbox=False, records=None):
+    raise NotImplementedError("CLI not yet implemented")
+
+
+@logger.catch
+def assemble_graph(fmu_path, blackbox=False, records=None):
     """Collect information about a FMU as a RDF graph."""
 
     logger.info(f"Parsing FMU {os.path.basename(fmu_path)}...")
