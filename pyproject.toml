@@ -35,6 +35,7 @@ description = "Extract triples about Functional Mock-up Units (FMUs) in Resource
 authors = ["Moritz Stüber <moritz.stueber@aut.uni-saarland.de>"]
 license = "MIT"
 readme = "README.adoc"
+repository = "https://github.com/UdSAES/fmi2rdf"
 keywords = ["FMI", "FMU", "RDF"]
 
 [tool.poetry.dependencies]
