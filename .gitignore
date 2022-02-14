@@ -8,3 +8,4 @@ __pycache__/
 .env
 output.ttl
 *.code-workspace
+catalog-v*.xml
