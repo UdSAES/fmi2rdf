@@ -195,56 +195,14 @@ def assemble_graph(ctx, fmu_path, blackbox=False, records=None):
                     graph.add((fmu_uriref, FMI.hasParameter, var_uriref))
 
                     # Create shape for model instantiation
-                    shapes_parameter_iri = f"{fmu_iri}#shapes-{var.name}"
-                    shapes_parameter_uriref = rdflib.URIRef(shapes_parameter_iri)
-
-                    graph.add((shapes_parameter_uriref, RDF.type, SH.NodeShape))
-                    value_for = rdflib.BNode()
-                    value = rdflib.BNode()
-                    unit = rdflib.BNode()
-                    properties = [
-                        (value_for, SH.path, SMS.isValueFor),
-                        (value_for, SH.hasValue, var_uriref),
-                        (value, SH.path, QUDT.value),
-                        (unit, SH.path, QUDT.unit),
-                        # (unit, SH.hasValue, UNIT...)  # TODO
-                    ]
-                    for s, p, o in properties:
-                        graph.add((shapes_parameter_uriref, SH.property, s))
-                        graph.add((s, p, o))
-
-                    if var.min != None:
-                        graph.add(
-                            (
-                                value,
-                                SH.minInclusive,
-                                rdflib.Literal(cast_to_type(var.min, var.type)),
-                            )
-                        )
-                    if var.max != None:
-                        graph.add(
-                            (
-                                value,
-                                SH.maxInclusive,
-                                rdflib.Literal(cast_to_type(var.max, var.type)),
-                            )
-                        )
-                    if var.nominal != None:
-                        graph.add(
-                            (
-                                value,
-                                SH.default,
-                                rdflib.Literal(cast_to_type(var.nominal, var.type)),
-                            )
-                        )
-
-                    blank_node = rdflib.BNode()
-                    graph.add((blank_node, SH.path, rdflib.URIRef(f"#{var.name}")))
-                    graph.add((blank_node, SH.minCount, rdflib.Literal(1)))
-                    graph.add((blank_node, SH.maxCount, rdflib.Literal(1)))
-                    graph.add((blank_node, SH.node, shapes_parameter_uriref))
-
-                    graph.add((shapes_instantiation_uriref, SH.property, blank_node))
+                    graph = add_variable_shape(
+                        graph,
+                        shapes_instantiation_uriref,
+                        var_uriref,
+                        var,
+                        fmu_iri,
+                        False,
+                    )
 
                     parameter_exposed = False
                 else:
@@ -323,5 +281,80 @@ def add_variable_constraints(graph, units_map, uriref, object):
         )
 
     # TODO ...?
+
+    return graph
+
+
+def add_variable_shape(graph, shape_uriref, var_uriref, var, fmu_iri, optional=False):
+    shapes_variable_iri = f"{fmu_iri}#shapes-{var.name}"
+    shapes_variable_uriref = rdflib.URIRef(shapes_variable_iri)
+
+    graph.add((shapes_variable_uriref, RDF.type, SH.NodeShape))
+
+    value = rdflib.BNode()
+    unit = rdflib.BNode()
+
+    if (
+        var.causality == "parameter"
+        or var.causality == "calculatedParameter"
+        or var.causality == "local"
+    ):
+        value_for = rdflib.BNode()
+
+        properties = [
+            (value_for, SH.path, SMS.isValueFor),
+            (value_for, SH.hasValue, var_uriref),
+            (value, SH.path, QUDT.value),
+            (unit, SH.path, QUDT.unit),
+            # (unit, SH.hasValue, UNIT...)  # TODO
+        ]
+
+    if var.causality == "input":
+        type = rdflib.BNode()
+        mapped_to = rdflib.BNode()
+        properties = [
+            (type, SH.path, RDF.type),
+            (type, SH.hasValue, SOSA.ObservableProperty),
+            (mapped_to, SH.path, SMS.mappedTo),
+            (mapped_to, SH.hasValue, var_uriref),
+        ]
+
+    for s, p, o in properties:
+        graph.add((shapes_variable_uriref, SH.property, s))
+        graph.add((s, p, o))
+
+    if var.min != None:
+        graph.add(
+            (
+                value,
+                SH.minInclusive,
+                rdflib.Literal(cast_to_type(var.min, var.type)),
+            )
+        )
+    if var.max != None:
+        graph.add(
+            (
+                value,
+                SH.maxInclusive,
+                rdflib.Literal(cast_to_type(var.max, var.type)),
+            )
+        )
+    if var.nominal != None:
+        graph.add(
+            (
+                value,
+                SH.default,
+                rdflib.Literal(cast_to_type(var.nominal, var.type)),
+            )
+        )
+
+    blank_node = rdflib.BNode()
+    graph.add((blank_node, SH.path, rdflib.URIRef(f"#{var.name}")))
+    graph.add((blank_node, SH.node, shapes_variable_uriref))
+    if optional == False:
+        graph.add((blank_node, SH.minCount, rdflib.Literal(1)))
+        graph.add((blank_node, SH.maxCount, rdflib.Literal(1)))
+
+    graph.add((shape_uriref, SH.property, blank_node))
 
     return graph
