@@ -17,7 +17,7 @@ from fmi2rdf import assemble_graph
 
 
 class TestCompetency(object):
-    def test_sparql_select(self, testcase, monkeypatch):
+    def test_sparql_select(self, testcase):
         # Select exemplary FMU
         fmu_path = os.path.abspath(f"./tests/data/{testcase['guid']}.fmu")
         iri_prefix = "http://example.org/FMUs"
