@@ -12,11 +12,11 @@ from fmi2rdf import assemble_graph, logger
     help={
         "fmu": "The path to the FMU to be parsed",
         "iri_prefix": "The prefix for generated IRIs, e.g. http://example.com/models",
-        "shapes": "Whether or not to generate SHACL shapes graphs (default: False)",
+        "shapes": "Create SHACL shapes graphs? (False if omitted, True otherwise)",
         "format": "The media type for graph serialization",
         "output": "The path of the output file, if desired",
         "filter": "A component name inside an FMU used to identify top-level parameters; can be specified multiple times",
-        "blackbox": "Whether or not to include variables that are neither input nor output (default: False)",
+        "blackbox": "Exclude variables that are neither input nor output? (False if omitted, True otherwise)",
     },
     optional=["format", "output", "filter"],
     iterable=["filter"],
