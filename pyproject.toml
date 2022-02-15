@@ -34,7 +34,7 @@ profile = "black"
 
 [tool.poetry]
 name = "fmi2rdf"
-version = "0.1.0"
+version = "0.1.0-beta.1"
 description = "Extract triples about Functional Mock-up Units (FMUs) in Resource Description Framework (RDF)"
 authors = ["Moritz Stüber <moritz.stueber@aut.uni-saarland.de>"]
 license = "MIT"
