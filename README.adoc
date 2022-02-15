@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: 2022 UdS AES <https://www.uni-saarland.de/lehrstuhl/frey.html>
+//
+// SPDX-License-Identifier: CC-BY-4.0
+
 = The FMI-Ontology and `fmi2rdf`-Parser
 
 image:https://img.shields.io/badge/code%20style-black-000000.svg[alt=Code style: black, link=https://github.com/psf/black]
@@ -25,8 +29,18 @@ The generated graph can be stored to a file when the `--output`-option is suppli
 
 For using `fmi2rdf` in Python, import and use the `assemble_graph(..)`-function, which returns an instance of https://rdflib.readthedocs.io/en/stable/apidocs/rdflib.html#graph[rdflib.graph.Graph].
 
-== Known Issues
+== Concepts
 ...
+
+== Known Issues
+.To be resolved immediately
+* [ ] ...
+
+.To be resolved soonish
+* [ ] ...
+
+.To be resolved eventually
+* [ ] ...
 
 == Contributing and Development
 Feedback on the FMI-ontology and the `fmi2rdf`-parser are very welcome! Please open an issue for questions, remarks and bug reports; or open a pull request if you want to improve something.
