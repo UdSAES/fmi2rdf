@@ -4,4 +4,4 @@
 """Initialize package."""
 
 
-from .fmi2rdf import assemble_graph
+from .fmi2rdf import assemble_graph, logger

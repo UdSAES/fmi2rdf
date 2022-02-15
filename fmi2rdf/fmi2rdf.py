@@ -9,7 +9,6 @@ import os
 import fmpy
 import pydash
 import rdflib
-from invoke import Context, task
 from loguru import logger
 from rdflib.namespace import OWL, RDF, SOSA, XSD
 
@@ -22,20 +21,8 @@ FMI = rdflib.Namespace("https://purl.org/fmi-ontology#")
 SMS = rdflib.Namespace("https://purl.org/sms-ontology#")
 
 
-@task(
-    help={
-        "fmu_path": "The full path to the FMU to be parsed",
-        "blackbox": "Whether or not to include variables that are neither input nor output",
-        "records": "A list of component names inside an FMU used to identify top-level parameters",
-    },
-    optional=["blackbox", "records"],
-)
-def fmi2rdf(ctx, fmu_path, blackbox=False, records=None):
-    raise NotImplementedError("CLI not yet implemented")
-
-
 @logger.catch
-def assemble_graph(fmu_path, blackbox=False, records=None):
+def assemble_graph(fmu_path, iri_prefix, shapes=False, blackbox=False, records=None):
     """Collect information about a FMU as a RDF graph."""
 
     logger.info(f"Parsing FMU {os.path.basename(fmu_path)}...")
@@ -61,7 +48,6 @@ def assemble_graph(fmu_path, blackbox=False, records=None):
     graph.bind("sms", SMS, override=True, replace=True)
 
     # Parse basic metadata about FMU to RDF
-    iri_prefix = os.getenv("FMI2RDF_IRI_PREFIX", "http://example.org/FMUs")
     fmu_iri = f"{iri_prefix}/{md.guid.strip('{}')}"
     fmu_uriref = rdflib.URIRef(fmu_iri)
 

@@ -14,10 +14,12 @@ from fmi2rdf import assemble_graph
 
 class TestCompetency(object):
     def test_sparql_select(self, testcase, monkeypatch):
-        monkeypatch.setenv("FMI2RDF_IRI_PREFIX", "http://example.org/FMUs")
-
+        # Select exemplary FMU
         fmu_path = os.path.abspath(f"./tests/data/{testcase['guid']}.fmu")
-        graph = assemble_graph(fmu_path, False, None)
+        iri_prefix = "http://example.org/FMUs"
+
+        # Build graph; executy query from test case
+        graph = assemble_graph(fmu_path, iri_prefix)
 
         a0 = graph.query(testcase["query"])
 
