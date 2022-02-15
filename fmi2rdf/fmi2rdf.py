@@ -10,7 +10,7 @@ import fmpy
 import pydash
 import rdflib
 from loguru import logger
-from rdflib.namespace import OWL, RDF, SOSA, XSD
+from rdflib.namespace import RDF, RDFS, SOSA, XSD
 
 # Declare namespaces to enable enforcing consistent prefixes
 DCT = rdflib.Namespace("http://purl.org/dc/terms/")
@@ -37,6 +37,7 @@ def assemble_graph(fmu_path, iri_prefix, shapes=False, blackbox=False, records=N
     graph = rdflib.Graph()
 
     graph.bind("rdf", RDF, override=True, replace=True)
+    graph.bind("rdfs", RDFS, override=True, replace=True)
 
     graph.bind("dct", DCT, override=True, replace=True)
     graph.bind("sh", SH, override=True, replace=True)
@@ -198,8 +199,8 @@ def assemble_graph(fmu_path, iri_prefix, shapes=False, blackbox=False, records=N
 
             graph.add((var_uriref, RDF.type, FMI.ScalarVariable))
 
-            # if var.name != None:
-            #     graph.add((var_uriref, DCT.title, rdflib.Literal(var.name)))
+            if var.name != None:
+                graph.add((var_uriref, RDFS.label, rdflib.Literal(var.name)))
             if var.description != None:
                 graph.add(
                     (var_uriref, DCT.description, rdflib.Literal(var.description))
