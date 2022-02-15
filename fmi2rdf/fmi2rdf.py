@@ -264,6 +264,11 @@ def cast_to_type(var, type=None):
         if type == "Integer":
             return int(var)
         if type == "Enumeration":
+            logger.error(
+                "type 'Enumeration' is not yet supported, should raise a `NotImplementedError`"
+            )
+            return var
+
             # TODO implement support for enumerations!
             raise NotImplementedError("type 'Enumeration' is not yet supported")
         if type == "Boolean":
