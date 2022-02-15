@@ -3,15 +3,57 @@
 # SPDX-License-Identifier: MIT
 
 @prefix : <https://purl.org/fmi-ontology#> .
+@prefix dct: <http://purl.org/dc/terms/> .
 @prefix fmi: <https://purl.org/fmi-ontology#> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix xml: <http://www.w3.org/XML/1998/namespace> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix vann: <http://purl.org/vocab/vann/> .
 @base <https://purl.org/fmi-ontology> .
 
-<https://purl.org/fmi-ontology> rdf:type owl:Ontology .
+<https://purl.org/fmi-ontology> rdf:type owl:Ontology ;
+                                 dct:creator <https://orcid.org/0000-0002-4006-8582> ;
+                                 dct:description "Ontology for representing FMUs in RDF" ;
+                                 dct:license <https://spdx.org/licenses/MIT> ;
+                                 dct:rightsHolder <https://www.uni-saarland.de/lehrstuhl/frey.html> ;
+                                 dct:title "FMI-Ontology"@en ;
+                                 vann:preferredNamespacePrefix "fmi" ;
+                                 vann:preferredNamespaceUri "https://purl.org/fmi-ontology#" ;
+                                 owl:versionInfo "0.1.0-beta.1" .
+
+#################################################################
+#    Annotation properties
+#################################################################
+
+###  http://purl.org/dc/terms/creator
+dct:creator rdf:type owl:AnnotationProperty .
+
+
+###  http://purl.org/dc/terms/description
+dct:description rdf:type owl:AnnotationProperty .
+
+
+###  http://purl.org/dc/terms/license
+dct:license rdf:type owl:AnnotationProperty .
+
+
+###  http://purl.org/dc/terms/rightsHolder
+dct:rightsHolder rdf:type owl:AnnotationProperty .
+
+
+###  http://purl.org/dc/terms/title
+dct:title rdf:type owl:AnnotationProperty .
+
+
+###  http://purl.org/vocab/vann/preferredNamespacePrefix
+vann:preferredNamespacePrefix rdf:type owl:AnnotationProperty .
+
+
+###  http://purl.org/vocab/vann/preferredNamespaceUri
+vann:preferredNamespaceUri rdf:type owl:AnnotationProperty .
+
 
 #################################################################
 #    Object Properties
