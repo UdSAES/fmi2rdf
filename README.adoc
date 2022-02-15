@@ -33,13 +33,21 @@ For using `fmi2rdf` in Python, import and use the `assemble_graph(..)`-function,
 ...
 
 == Known Issues
-.To be resolved immediately
-* [ ] ...
+.To be resolved as soon as possible
+* [ ] Shape for simulation incomplete--solver settings missing!
+* [ ] Type casting for enumerations not yet implemented
+* [ ] Explanation of concepts missing in README
 
 .To be resolved soonish
+* [ ] Create release (tag, GitHub)
+* [ ] Extend test coverage
+* [ ] Revise generated shapes--concise, complete, useful?
+* [ ] Release as package on PyPI?
+* [ ] Work on `TODO`-markers in source code
 * [ ] ...
 
 .To be resolved eventually
+* [ ] Improve score in https://foops.linkeddata.es/FAIR_validator.html[FOOPS!] scanner
 * [ ] ...
 
 == Contributing and Development
