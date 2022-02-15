@@ -56,6 +56,7 @@ pydash = "^5.1.0"
 isort = "^5.10.1"
 pytest = "^6.2.5"
 black = "^22.1.0"
+reuse = "^0.14.0"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
