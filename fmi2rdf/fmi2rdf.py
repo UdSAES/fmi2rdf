@@ -113,18 +113,20 @@ def assemble_graph(fmu_path, iri_prefix, shapes=False, blackbox=False, records=N
     logger.debug(json.dumps(types_map, indent=2))
 
     # Prepare creation of shapes for model instantiation
-    shapes_instantiation_iri = f"{fmu_iri}#shapes-instantiation"
-    shapes_instantiation_uriref = rdflib.URIRef(shapes_instantiation_iri)
+    if shapes == True:
+        shapes_instantiation_iri = f"{fmu_iri}#shapes-instantiation"
+        shapes_instantiation_uriref = rdflib.URIRef(shapes_instantiation_iri)
 
-    graph.add((shapes_instantiation_uriref, RDF.type, SH.NodeShape))
-    graph.add((shapes_instantiation_uriref, SH.targetNode, rdflib.BNode()))
+        graph.add((shapes_instantiation_uriref, RDF.type, SH.NodeShape))
+        graph.add((shapes_instantiation_uriref, SH.targetNode, rdflib.BNode()))
 
     # Prepare creation of shapes for simulation
-    shapes_simulation_iri = f"{fmu_iri}#shapes-simulation"
-    shapes_simulation_uriref = rdflib.URIRef(shapes_simulation_iri)
+    if shapes == True:
+        shapes_simulation_iri = f"{fmu_iri}#shapes-simulation"
+        shapes_simulation_uriref = rdflib.URIRef(shapes_simulation_iri)
 
-    graph.add((shapes_simulation_uriref, RDF.type, SH.NodeShape))
-    graph.add((shapes_simulation_uriref, SH.targetNode, rdflib.BNode()))
+        graph.add((shapes_simulation_uriref, RDF.type, SH.NodeShape))
+        graph.add((shapes_simulation_uriref, SH.targetNode, rdflib.BNode()))
 
     # Identify and parse variables defined within the FMU
     for var in md.modelVariables:
@@ -166,14 +168,15 @@ def assemble_graph(fmu_path, iri_prefix, shapes=False, blackbox=False, records=N
                     graph.add((fmu_uriref, FMI.hasParameter, var_uriref))
 
                     # Create shape for model instantiation
-                    graph = add_variable_shape(
-                        graph,
-                        shapes_instantiation_uriref,
-                        var_uriref,
-                        var,
-                        fmu_iri,
-                        False,
-                    )
+                    if shapes == True:
+                        graph = add_variable_shape(
+                            graph,
+                            shapes_instantiation_uriref,
+                            var_uriref,
+                            var,
+                            fmu_iri,
+                            False,
+                        )
 
                     parameter_exposed = False
                 else:
@@ -184,9 +187,10 @@ def assemble_graph(fmu_path, iri_prefix, shapes=False, blackbox=False, records=N
                 graph.add((fmu_uriref, FMI.hasInput, var_uriref))
 
                 # Create shape for input timeseries to be supplied
-                graph = add_variable_shape(
-                    graph, shapes_simulation_uriref, var_uriref, var, fmu_iri, False
-                )
+                if shapes == True:
+                    graph = add_variable_shape(
+                        graph, shapes_simulation_uriref, var_uriref, var, fmu_iri, False
+                    )
 
             if var.causality == "output":
                 graph.add((var_uriref, RDF.type, FMI.Output))
