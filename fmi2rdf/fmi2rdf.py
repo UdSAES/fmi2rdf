@@ -58,7 +58,7 @@ def assemble_graph(fmu_path, iri_prefix, shapes=False, blackbox=False, records=N
         (FMI.fmiVersion, md.fmiVersion, XSD.normalizedString),
         (FMI.modelName, md.modelName, XSD.string),
         (FMI.guid, md.guid.strip("{}"), XSD.normalizedString),
-        # XXX the following attributes are not supported by FMPy! -> investigate
+        # TODO the following attributes are not supported by FMPy! -> investigate
         # (DCT.description, md.description, XSD.string),
         # (DCT.creator, md.author, XSD.string),
         # (FMI.version, md.version, XSD.normalizedString),
@@ -153,12 +153,13 @@ def assemble_graph(fmu_path, iri_prefix, shapes=False, blackbox=False, records=N
                 or var.causality == "local"
             ):
                 if records != None:
+                    # TODO document that `filter` is mutually exclusive with `blackbox`!
                     blackbox = False
                     for record in records.split(","):
                         parameter_exposed |= pydash.starts_with(var.name, record)
                 elif blackbox == True:
                     # Only parse top-level parameters
-                    # XXX Assumes hierarchical component names!
+                    # TODO Assumes hierarchical component names!
                     if not ("." in var.name):
                         parameter_exposed = True
                 else:
@@ -234,6 +235,8 @@ def assemble_graph(fmu_path, iri_prefix, shapes=False, blackbox=False, records=N
     if (md.variableNamingConvention == "structured") and (blackbox == False):
         pass
 
+    # TODO Amend shape required for simulation with info about solver settings
+
     return graph
 
 
@@ -257,6 +260,7 @@ def cast_to_type(var, type=None):
         if type == "Integer":
             return int(var)
         if type == "Enumeration":
+            # TODO implement support for enumerations!
             raise NotImplementedError("type 'Enumeration' is not yet supported")
         if type == "Boolean":
             return bool(var)
@@ -315,7 +319,7 @@ def add_variable_shape(graph, shape_uriref, var_uriref, var, fmu_iri, optional=F
             (value_for, SH.hasValue, var_uriref),
             (value, SH.path, QUDT.value),
             (unit, SH.path, QUDT.unit),
-            # (unit, SH.hasValue, UNIT...)  # TODO
+            # (unit, SH.hasValue, UNIT...)  # TODO make generated shape more concise
         ]
 
     if var.causality == "input":
