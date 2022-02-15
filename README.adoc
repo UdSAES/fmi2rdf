@@ -1,15 +1,39 @@
-= FMI to RDF
+= The FMI-Ontology and `fmi2rdf`-Parser
 
-Extracts facts about https://fmi-standard.org[Functional Mock-up Units (FMUs)] and represents them as triples using the https://www.w3.org/TR/rdf11-concepts/[Resource Description Framework (RDF)].
+image:https://img.shields.io/badge/code%20style-black-000000.svg[alt=Code style: black, link=https://github.com/psf/black]
+image:https://img.shields.io/badge/%20imports-isort-%231674b1?style=flat&labelColor=ef8336[alt=Imports: isort, link=https://timothycrosley.github.io/isort]
 
-IMPORTANT: *Recent improvements to code and README/documentation have not been pushed to GitHub yet -- will be fixed as soon as possible*, certainly in calender week 7! (2022-02-13)
+Extracts facts about https://fmi-standard.org[Functional Mock-up Units (FMUs)] and represents them as triples using the https://www.w3.org/TR/rdf11-concepts/[Resource Description Framework (RDF)]. The goal is to enable the use of FMUs in the context of the Semantic Web.
+
+This repository contains two essential building blocks for doing so: the link:fmi-ontology.ttl[FMI-ontology] and the `fmi2rdf`-parser. The ontology is essentially a transcription of definitions in the FMI standard document (v2.0.2); `rdfs:comment`-annotations are mostly verbatim copies of the definitions in that document.
+
+The parser creates a representation of a FMU in RDF. The information extracted includes metadata and structural information about the model as exposed in the `modelDescription.xml`-file as well as additional facts. It is primarily encoded using the FMI-ontology as well as the https://github.com/UdSAES/sms-ontology[Systems Modelling and Simulation (SMS)-ontology], in conjunction with commonly used ontologies such as RDF, XSD, https://www.dublincore.org/specifications/dublin-core/dcmi-terms/[DCT] and https://www.w3.org/TR/vocab-ssn/[SOSA].
+
+`fmi2rdf` relies on https://github.com/CATIA-Systems/FMPy[FMPy] for handling FMUs and https://rdflib.readthedocs.io/en/stable/[rdflib] for creating an RDF graph.
 
 == Installation
-...
+Get a local copy of the code in this repository by cloning or downloading a release. Then, install the dependencies using `poetry install` and activate the resulting virtual environment with `poetry shell`.
+
+For details, see the dependency specification in  `pyproject.toml` the documentation of https://python-poetry.org/docs/[`poetry`].
 
 == Usage
-...
+`fmi2rdf` can be used via a Command-Line Interface (CLI) as well as from Python source code.
+
+The CLI is implemented using https://docs.pyinvoke.org/en/stable/index.html[Invoke]. List the available functionality using `invoke --list` and display the documentation for specific functionality using, for example, `invoke --help fmu2rdf`.
+
+The generated graph can be stored to a file when the `--output`-option is supplied. Through the `--format`-option, the https://rdflib.readthedocs.io/en/stable/intro_to_parsing.html#saving-rdf[formats for graph serialization supported by rdflib] can be selected.
+
+For using `fmi2rdf` in Python, import and use the `assemble_graph(..)`-function, which returns an instance of https://rdflib.readthedocs.io/en/stable/apidocs/rdflib.html#graph[rdflib.graph.Graph].
 
 == Known Issues
 ...
 
+== Contributing and Development
+Feedback on the FMI-ontology and the `fmi2rdf`-parser are very welcome! Please open an issue for questions, remarks and bug reports; or open a pull request if you want to improve something.
+
+The code in this repository uses Semantic Versioning (semver) and follows the https://semver.org/spec/v2.0.0.html[semver specification].
+
+The Python code is formatted automatically using https://black.readthedocs.io/en/stable/[black] and https://pycqa.github.io/isort/[isort].
+
+== License
+Parser and ontology are licensed under the https://spdx.org/licenses/MIT.html[MIT License]. This is specified in the format suggested by the https://reuse.software[REUSE SOFTWARE]-initiative. In short: https://spdx.dev/ids/[SPDX IDs] are included in every textual file and the license text can be found in link:LICENSES/[./LICENSES/].
