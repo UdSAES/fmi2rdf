@@ -45,10 +45,10 @@ keywords = ["FMI", "FMU", "RDF"]
 [tool.poetry.dependencies]
 python = "^3.10"
 invoke = "^1.6.0"
-rdflib = "^6.0.2"
-requests = "^2.26.0"
-loguru = "^0.5.3"
-FMPy = "^0.3.2"
+rdflib = "^6.1.1"
+requests = "^2.27.1"
+loguru = "0.6.0"
+FMPy = "^0.3.5"
 PyYAML = "^6.0"
 pydash = "^5.1.0"
 
